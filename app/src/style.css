@@ -1,0 +1,54 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
+/* Styles that are applied to all elements */
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+/* Styles for the HTML Page */
+html {
+    font-family: 'Inter', serif;
+    scrollbar-width: thin;
+}
+
+/* Variables to prevent hard-coding values */
+:root {
+    /* Light Mode Colorscheme */
+    --text: #141a17;
+    --background: #f6f9f8;
+    --primary: #3d524a;
+    --secondary: #a2b6b9;
+    --accent: #637683;
+
+    /* Sizing */
+    --gutters: 1rem;
+    --border-radius: 1rem;
+}
+
+/* 
+    When the user selects dark-mode, we will the "dark" class
+    to the body element.
+*/
+body.dark {
+    /* Update colorscheme to dark mode colors */
+    --text: #e5ebe8;
+    --background: #060908;
+    --primary: #adc2ba;
+    --secondary: #465a5d;
+    --accent: #7c8f9c;
+}
+
+body {
+    background-color: var(--background);
+    color: var(--text);
+    font-size: 1rem;
+}
+
+/* Apply the gutters to the header and section tags */
+header,
+section,
+#app {
+    padding: var(--gutters);
+}
