@@ -21,10 +21,11 @@ html {
     --primary: #3d524a;
     --secondary: #a2b6b9;
     --accent: #637683;
+    --border: rgba(0, 0, 0, 0.1);
 
     /* Sizing */
     --gutters: 1rem;
-    --border-radius: 1rem;
+    --border-radius: 5px;
 }
 
 /* 
@@ -38,6 +39,7 @@ body.dark {
     --primary: #adc2ba;
     --secondary: #465a5d;
     --accent: #7c8f9c;
+    --border: rgba(255, 255, 255, 0.1);
 }
 
 body {
@@ -48,7 +50,43 @@ body {
 
 /* Apply the gutters to the header and section tags */
 header,
-section,
-#app {
+section {
     padding: var(--gutters);
+}
+
+button {
+    border: none;
+    cursor: pointer;
+}
+
+/* HEADER */
+
+header {
+    display: flex;
+    justify-content: space-around;
+    border-bottom: 1px solid var(--border);
+    height: 70px;
+}
+
+#temperature-switch {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100px;
+    background-color: var(--background);
+    border-radius: var(--border-radius);
+    border: 1px solid var(--border);
+}
+
+.temperature-switch-option {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    border-radius: var(--border-radius);
+}
+
+.active-temperature {
+    background-color: var(--accent);
 }
