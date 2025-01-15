@@ -1,7 +1,11 @@
 // Form Container
 export const form = () => {
+    const form = document.createElement('form');
     const input = document.createElement('input');
-
+    input.id = 'search';
+    const div = document.createElement('div');
+    const h2 = document.createElement('h2');
+    
 }
 
 // Weather Data Container
