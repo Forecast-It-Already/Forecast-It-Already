@@ -17,7 +17,7 @@ export const weatherDataContainer = () => {
 
 const hourly = (weatherData) => {
     const div = document.querySelector('div#hourly');
-    data.hourly[time].forEach(time => {
+    weatherData.hourly.forEach(time => {
         const military = time.split('T')[1];
         const weatherCode = time.weatherCode;
         // 1. Create
