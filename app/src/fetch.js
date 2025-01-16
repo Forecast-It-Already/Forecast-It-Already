@@ -5,13 +5,13 @@
  * @param {string} name - The name of the location.
  * @returns {Object} - Organized weather data including current, hourly, and daily forecasts.
  */
-export const getWeatherData = async (latitude, longitude, name) => {
+export const getWeatherData = async (latitude, longitude, name, unit) => {
     // Build the API endpoint with query parameters to specify the required data.
     const url = `https://api.open-meteo.com/v1/forecast?latitude=${encodeURI(
         latitude
     )}&longitude=${encodeURI(
         longitude
-    )}&current=temperature_2m,precipitation,wind_direction_10m&hourly=temperature_2m,weather_code&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_sum,wind_direction_10m_dominant&temperature_unit=fahrenheit&precipitation_unit=inch&timezone=America%2FNew_York`;
+    )}&current=temperature_2m,precipitation,wind_direction_10m&hourly=temperature_2m,weather_code&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_sum,wind_direction_10m_dominant&temperature_unit=${unit}&precipitation_unit=inch&timezone=America%2FNew_York`;
 
     try {
         const response = await fetch(url);
@@ -21,6 +21,8 @@ export const getWeatherData = async (latitude, longitude, name) => {
         }
 
         const data = await response.json();
+
+        const currentDate = new Date(); // Current date and time for filtering out past data.
 
         /**
          * Organize daily weather data.
@@ -32,7 +34,23 @@ export const getWeatherData = async (latitude, longitude, name) => {
          */
         const daily = {};
         data.daily.time.forEach((key, index) => {
+            const day = new Date(key).getDay();
+            const daysOfWeek = [
+                'Monday',
+                'Tuesday',
+                'Wednesday',
+                'Thursday',
+                'Friday',
+                'Saturday',
+                'Sunday',
+            ];
+
+            if (currentDate.getDay() === day + 1) {
+                daysOfWeek[day] = 'Today';
+            }
+
             daily[key] = {
+                day: daysOfWeek[day],
                 weatherCode: data.daily.weather_code[index],
                 minTemperature: data.daily['temperature_2m_min'][index],
                 maxTemperature: data.daily['temperature_2m_max'][index],
@@ -50,13 +68,18 @@ export const getWeatherData = async (latitude, longitude, name) => {
          */
         const hourly = {};
         const hourlyUnits = data.hourly_units; // Units for hourly data, e.g., °F or °C.
-        const currentDate = new Date(); // Current date and time for filtering out past data.
+
+        data.hourly.time = data.hourly.time.filter((key) => {
+            const date = new Date(key);
+            if (currentDate >= date) return;
+
+            return key;
+        });
+
+        data.hourly.time = data.hourly.time.slice(0, 25);
 
         data.hourly.time.forEach((key, index) => {
-            const date = new Date(key);
-
             // Skip past hourly data to only include future data.
-            if (currentDate >= date) return;
 
             // Store the hourly temperature and weather code with their respective units.
             hourly[key] = {
