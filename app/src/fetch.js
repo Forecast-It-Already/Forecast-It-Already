@@ -6,6 +6,7 @@
  * @returns {Object}
  */
 export const getWeatherData = async (latitude, longitude, name) => {
+    // Endpoint with the params of the data we are looking to get.
     const url = `https://api.open-meteo.com/v1/forecast?latitude=${encodeURI(
         latitude
     )}&longitude=${encodeURI(
@@ -21,7 +22,15 @@ export const getWeatherData = async (latitude, longitude, name) => {
 
         const daily = {};
 
+        /*
+            Here we are organizing weather data for given days. The API gives the
+            data back to use very disorganized, do I'm creating an object where:
+
+            key: the date (ex. "2025-01-15")
+            value: precipitation, temperature, time, and wind direction
+        */
         for (const [index, key] of data.daily.time.entries()) {
+            // Here, we obtain the disorganized information
             const weatherCode = data.daily.weather_code[index];
             const minTemperature = data.daily['temperature_2m_min'][index];
             const maxTemperature = data.daily['temperature_2m_max'][index];
@@ -29,6 +38,7 @@ export const getWeatherData = async (latitude, longitude, name) => {
             const windDirection =
                 data.daily['wind_direction_10m_dominant'][index];
 
+            // We then put this disorganized information to be in one place.
             daily[key] = {
                 weatherCode,
                 minTemperature,
@@ -42,6 +52,15 @@ export const getWeatherData = async (latitude, longitude, name) => {
         const hourly = {};
         const hourlyUnits = data.hourly_units;
 
+        /*
+            On this for loop, we follow the same pattern for the daily
+            weather information. We put disorganized information in
+            an object to make it better to work with.
+
+            key: date and time (ex. "2025-01-15T22:00")
+            value: temperature and weather code
+        */
+
         for (const [index, key] of data.hourly.time.entries()) {
             const currentDate = new Date();
             const date = new Date(key);
@@ -51,7 +70,7 @@ export const getWeatherData = async (latitude, longitude, name) => {
             }
 
             const temperature =
-                data.hourly['temperature_2m'][index] +
+                Math.round(data.hourly['temperature_2m'][index]) +
                 hourlyUnits['temperature_2m'];
             const weatherCode = data.hourly['weather_code'][index];
 
@@ -63,13 +82,14 @@ export const getWeatherData = async (latitude, longitude, name) => {
 
         const currentUnits = data['current_units'];
 
-        // TODO: Add Minimum and Maximum Temperature
+        // We return the organized information in an object.
         return {
             name,
             current: {
                 time: data.current.time,
                 temperature:
-                    data.current['temperature_2m'] + currentUnits.temperature, // ! Fix NaN value
+                    Math.round(data.current['temperature_2m']) +
+                    currentUnits['temperature_2m'],
                 precipitation:
                     data.current['precipitation'] + currentUnits.precipitation,
                 windDirection:
@@ -84,6 +104,11 @@ export const getWeatherData = async (latitude, longitude, name) => {
     }
 };
 
+/**
+ * Fetch the latitude and longitude from a location name like "Brooklyn"
+ * @param {string} name
+ * @returns {object}
+ */
 export const getGeoCoding = async (name) => {
     const url = `https://geocoding-api.open-meteo.com/v1/search?name=${name}&count=1&language=en&format=json`;
 
