@@ -1,3 +1,5 @@
+import { weatherIcons } from './constants.js';
+
 // Form Container
 export const form = () => {
     const form = document.createElement('form');
@@ -13,21 +15,23 @@ export const weatherDataContainer = () => {
     div.append(hourly, weatherDetailsContainer);
 };
 
-const hourly = (data) => {
-    const div = document.createElement('div');
-    data.hourly[time];
-    const span = document.createElement('span');
-    const pTime = document.createElement('p');
-    pTime.id = 'time';
-    const pTemp = document.createElement('p');
-    pTemp.id = 'temperature';
-    const i = document.createElement('i');
-    const weatherCode = data.hourly.time[weatherCode];
-    i.className = weatherIcons[weatherCode];
-    h3Time.textContent = data.hourly[time];
-    h3Temp.textContent = data.hourly.time[temperature];
-    span.append(h3Time, i, h3Temp);
-    div.append(span);
+const hourly = (weatherData) => {
+    const div = document.querySelector('div#hourly');
+    data.hourly[time].forEach(time => {
+        // const span = document.createElement('span');
+        
+        const pTime = document.createElement('p');
+        pTime.class = 'time';
+        const pTemp = document.createElement('p');
+        pTemp.class = 'temperature';
+        const i = document.createElement('i');
+        const weatherCode = weatherData.hourly.time[weatherCode];
+        i.className = weatherIcons[weatherCode];
+        pTime.textContent = weatherData.hourly[time];
+        pTemp.textContent = weatherData.hourly.time[temperature];
+        span.append(pTime, i, pTemp);
+        div.append(span);
+    });
 };
 
 const weatherDetailsContainer = () => {
@@ -37,10 +41,31 @@ const weatherDetailsContainer = () => {
     div.append(daily, conditionsProverb);
 };
 
-const daily = () => {
-    const div = document.createElement('div');
-    const day = document.createElement('day');
-    div.append(day);
+const daily = (weatherData) => {
+    const div = document.querySelector('div#daily');
+    weatherData.daily.forEach(date => {
+        // 1. Create
+        const span = document.createElement('span');
+        const pDay = document.createElement('p');
+        const pTemp = document.createElement('p');
+        const i = document.createElement('i');
+        const weatherCode = date.weatherCode;
+        // 2. Modify
+        if (date === weatherData.current.time.split("T")[0]) {
+            span.class = 'clicked';
+            pDay.textContent = "Today";
+        };
+        span.class = 'none';
+        pDay.class = 'day';
+        pTemp.class = 'temperature';
+        i.className = weatherIcons[weatherCode];
+        
+        pDay.textContent = date.day;
+        pTemp.textContent = `${date.minTemperature} / ${date.maxTemperature}`;
+        // 3. Append
+        span.append(pDay, i, pTemp);
+        div.append(span);
+    });
 };
 
 const conditions = () => {};
@@ -49,34 +74,5 @@ const proverb = () => {
     const div = document.createElement('div');
     const h3 = document.createElement('h3');
     const p = document.createElement('p');
-    const slogan = [
-        {
-            rain: [
-                'If the goose honks high, fair weather. If the goose honks low, foul weather.',
-                'When your joints start to ache, rainy weather is at stake.',
-                'When wooden chairs creak, rain will come within a week.',
-                'When gnats swarm and bite, rain is in sight.',
-            ],
-        },
-        { humidity: 'When pipes smell stronger, it’s going to rain.' },
-        {
-            dry: 'If spiders are many and spinning their webs, the spell will soon be very dry.',
-        },
-        {
-            cold: {
-                name: 'New York',
-                slogan: "It's BRICK outside!",
-            },
-        },
-        {
-            sunset: 'Red sky at night, sailor’s delight; red sky in morning, sailor’s warning.',
-        },
-        { storm: 'When frogs croak loudly, it’s going to rain.' },
-        {
-            snow: 'If a circle forms ‘round the moon, ‘twill rain or snow soon.',
-        },
-        {
-            clear: 'When the morning dew is heavy, rain will not come that day.',
-        },
-    ];
+    
 };
