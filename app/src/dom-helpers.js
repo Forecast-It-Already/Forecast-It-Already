@@ -1,17 +1,22 @@
 import { weatherIcons, slogans } from './constants.js';
 
 // Form Container
-export const form = () => {
-    const form = document.createElement('form');
-    const input = document.createElement('input');
-    input.id = 'search';
-    const div = document.createElement('div');
-    const h2 = document.createElement('h2');
+export const form = (weatherData) => {
+    // 1. Create
+    const h2 = document.querySelector('h2.current-weather-title');
+    const i = document.querySelector('i#current-weather-icon');
+    const h3 = document.querySelector('h3#current-weather-temperature');
+    const h1 = document.querySelector('h1#current-weather-time');
+    // 2. Modify
+    h2.textContent = weatherData.name;
+    i.className = weatherIcons.weatherData.weatherCode;
+    h3.textContent = weatherData.current.temperature;
+    h1.textContent = weatherData.current.time.split('T')[1];
 };
 
 // Weather Data Container
 export const weatherDataContainer = () => {
-    const div = document.createElement('div');
+    const div = document.querySelector('div.weatherDataContainer');
     div.append(hourly, weatherDetailsContainer);
 };
 
@@ -105,7 +110,7 @@ const conditions = () => {
     });
 };
 
-const proverb = (weatherData) => {
+const proverb = () => {
     const daily = document.querySelector('div.daily');
     const div = document.querySelector('div.proverb');
     daily.addEventListener('click', (e) => {
