@@ -17,6 +17,7 @@ html {
 :root {
     /* Light Mode Colorscheme */
     --text: #141a17;
+    --secondary-text: #e5ebe8;
     --background: #f6f9f8;
     --primary: #3d524a;
     --secondary: #a2b6b9;
@@ -35,6 +36,7 @@ html {
 body.dark {
     /* Update colorscheme to dark mode colors */
     --text: #e5ebe8;
+    --secondary-text: #141a17;
     --background: #060908;
     --primary: #adc2ba;
     --secondary: #465a5d;
@@ -52,6 +54,10 @@ body {
 header,
 section {
     padding: var(--gutters);
+}
+
+section {
+    border-bottom: 1px solid var(--border);
 }
 
 button {
@@ -89,4 +95,58 @@ header {
 
 .active-temperature {
     background-color: var(--accent);
+}
+
+/* Container for the weather icon, time and form */
+.weather-icon-time-form-container {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    gap: 2rem;
+}
+
+.weather-icon-temperature-time-container {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+.weather-temperature-time-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+#current-weather-icon {
+    font-size: 7rem;
+}
+
+#current-weather-time {
+    font-size: 2.5rem;
+}
+
+.current-weather-form-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    text-align: center;
+}
+
+#search-location-input {
+    width: 400px;
+    height: 50px;
+    padding: var(--gutters);
+    font-size: 1.25rem;
+    outline: none;
+    border: 2px solid var(--border);
+    border-radius: var(--border-radius);
+}
+
+#current-weather-title {
+    font-size: 2.5rem;
+}
+
+#current-weather-temperature {
+    font-size: 3rem;
 }
