@@ -2,11 +2,11 @@
  * Fetch weather data based on the latitude and longitude
  * @param {number} latitude
  * @param {number} longitude
- * @param {string} name
- * @returns {Object}
+ * @param {string} name - The name of the location.
+ * @returns {Object} - Organized weather data including current, hourly, and daily forecasts.
  */
 export const getWeatherData = async (latitude, longitude, name) => {
-    // Endpoint with the params of the data we are looking to get.
+    // Build the API endpoint with query parameters to specify the required data.
     const url = `https://api.open-meteo.com/v1/forecast?latitude=${encodeURI(
         latitude
     )}&longitude=${encodeURI(
@@ -16,91 +16,89 @@ export const getWeatherData = async (latitude, longitude, name) => {
     try {
         const response = await fetch(url);
 
-        if (!response.ok) throw new Error('Weather Data Request Failed');
+        if (!response.ok) {
+            throw new Error('Weather Data Request Failed');
+        }
 
         const data = await response.json();
 
+        /**
+         * Organize daily weather data.
+         * The API provides arrays for daily data (e.g., temperatures, precipitation),
+         * which are disorganized. We'll restructure them into an object:
+         *
+         * key: The date (e.g., "2025-01-15")
+         * value: An object containing precipitation, temperature, wind direction, and weather code.
+         */
         const daily = {};
-
-        /*
-            Here we are organizing weather data for given days. The API gives the
-            data back to use very disorganized, do I'm creating an object where:
-
-            key: the date (ex. "2025-01-15")
-            value: precipitation, temperature, time, and wind direction
-        */
-        for (const [index, key] of data.daily.time.entries()) {
-            // Here, we obtain the disorganized information
-            const weatherCode = data.daily.weather_code[index];
-            const minTemperature = data.daily['temperature_2m_min'][index];
-            const maxTemperature = data.daily['temperature_2m_max'][index];
-            const precipitation = data.daily['precipitation_sum'][index];
-            const windDirection =
-                data.daily['wind_direction_10m_dominant'][index];
-
-            // We then put this disorganized information to be in one place.
+        data.daily.time.forEach((key, index) => {
             daily[key] = {
-                weatherCode,
-                minTemperature,
-                maxTemperature,
-                maxTemperature,
-                precipitation,
-                windDirection,
+                weatherCode: data.daily.weather_code[index],
+                minTemperature: data.daily['temperature_2m_min'][index],
+                maxTemperature: data.daily['temperature_2m_max'][index],
+                precipitation: data.daily['precipitation_sum'][index],
+                windDirection: data.daily['wind_direction_10m_dominant'][index],
             };
-        }
+        });
 
+        /**
+         * Organize hourly weather data.
+         * Similar to daily data, hourly data is also disorganized. We'll structure it into an object:
+         *
+         * key: The date and time (e.g., "2025-01-15T22:00")
+         * value: An object containing temperature and weather code.
+         */
         const hourly = {};
-        const hourlyUnits = data.hourly_units;
+        const hourlyUnits = data.hourly_units; // Units for hourly data, e.g., °F or °C.
+        const currentDate = new Date(); // Current date and time for filtering out past data.
 
-        /*
-            On this for loop, we follow the same pattern for the daily
-            weather information. We put disorganized information in
-            an object to make it better to work with.
-
-            key: date and time (ex. "2025-01-15T22:00")
-            value: temperature and weather code
-        */
-
-        for (const [index, key] of data.hourly.time.entries()) {
-            const currentDate = new Date();
+        data.hourly.time.forEach((key, index) => {
             const date = new Date(key);
 
-            if (currentDate >= date) {
-                continue;
-            }
+            // Skip past hourly data to only include future data.
+            if (currentDate >= date) return;
 
-            const temperature =
-                Math.round(data.hourly['temperature_2m'][index]) +
-                hourlyUnits['temperature_2m'];
-            const weatherCode = data.hourly['weather_code'][index];
-
+            // Store the hourly temperature and weather code with their respective units.
             hourly[key] = {
-                temperature,
-                weatherCode,
+                temperature:
+                    Math.round(data.hourly['temperature_2m'][index]) +
+                    (hourlyUnits?.['temperature_2m'] || '°F'),
+                weatherCode: data.hourly['weather_code'][index],
             };
-        }
+        });
 
-        const currentUnits = data['current_units'];
+        /**
+         * Extract and organize current weather data.
+         * Includes the time of the reading, temperature, precipitation, and wind direction.
+         */
+        const currentUnits = data.current_units;
 
-        // We return the organized information in an object.
         return {
-            name,
+            name, // Name of the location.
             current: {
                 time: data.current.time,
                 temperature:
                     Math.round(data.current['temperature_2m']) +
-                    currentUnits['temperature_2m'],
+                    (currentUnits['temperature_2m'] || '°F'),
                 precipitation:
-                    data.current['precipitation'] + currentUnits.precipitation,
+                    data.current['precipitation'] +
+                    (currentUnits.precipitation || 'in'),
                 windDirection:
                     data.current['wind_direction_10m'] +
-                    currentUnits['wind_direction_10m'],
+                    (currentUnits['wind_direction_10m'] || '°'),
             },
-            hourly,
-            daily,
+            hourly, // Organized hourly forecast.
+            daily, // Organized daily forecast.
         };
     } catch (err) {
-        console.error(err);
+        console.error('Error fetching weather data:', err.message);
+
+        return {
+            name,
+            current: null,
+            hourly: {},
+            daily: {},
+        };
     }
 };
 
