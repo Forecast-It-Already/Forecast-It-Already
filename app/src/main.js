@@ -5,3 +5,4 @@ import './style.css';
 const main = () => {};
 main();
 const temperatureUnit = initializeTempUnit();
+initializeTempUnit();

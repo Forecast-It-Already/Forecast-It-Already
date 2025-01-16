@@ -6,7 +6,7 @@ const getLocalStorage = (key) => {
     return JSON.parse(localStorage.getItem(key));
 };
 
-const getTemperatureUnit = () => {
+export const getTemperatureUnit = () => {
     return getLocalStorage('temperature-unit');
 };
 
