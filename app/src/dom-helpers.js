@@ -62,6 +62,7 @@ const daily = (weatherData) => {
         span.className = 'none';
         span.id = date;
         span.dataset.date = date;
+        span.dataset.weatherCode = weatherCode;
         span.dataset.high = date.maxTemperature;
         span.dataset.low = date.minTemperature;
         span.dataset.precipitation = date.precipitation;
@@ -101,12 +102,24 @@ const conditions = () => {
         pWindDirection.textContent = span.dataset.windDirection;
         // 3. Append
         div.append(pHigh, pLow, pPrecipitation, pWindDirection);
-    })
+    });
 };
 
-const proverb = () => {
+const proverb = (weatherData) => {
+    const daily = document.querySelector('div.daily');
     const div = document.querySelector('div.proverb');
-    const h3 = document.createElement('h3');
-    const p = document.createElement('p');
-    
+    daily.addEventListener('click', (e) => {
+        div.innerHTML = '';
+        if (!e.target.classList.contains("clicked")) {
+            return;
+        };
+        // 1. Create
+        const h3 = document.createElement('h3');
+        const p = document.createElement('p');
+        // 2. Modify
+        h3.textContent = `${slogans.span.dataset.weatherCode.name}:`;
+        p.textContent = slogans.span.dataset.weatherCode.phrase;
+        // 3. Create
+        div.append(h3, p);
+    });
 };
