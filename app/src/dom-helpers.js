@@ -16,7 +16,7 @@ export const form = (weatherData) => {
 
 // Weather Data Container
 export const weatherDataContainer = () => {
-    const div = document.querySelector('div.weatherDataContainer');
+    const div = document.querySelector('div.weather-data-container');
     div.append(hourly, weatherDetailsContainer);
 };
 
@@ -45,8 +45,8 @@ const hourly = (weatherData) => {
 };
 
 const weatherDetailsContainer = () => {
-    const div = document.querySelector('div.weatherDetailsContainer');
-    const conditionsProverb = document.querySelector('div.conditionsProverb');
+    const div = document.querySelector('div.weather-details-container');
+    const conditionsProverb = document.querySelector('div.conditions-proverb');
     conditionsProverb.append(conditions, proverb);
     div.append(daily, conditionsProverb);
 };
