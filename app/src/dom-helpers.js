@@ -1,4 +1,4 @@
-import { weatherIcons } from './constants.js';
+import { weatherIcons, slogans } from './constants.js';
 
 // Form Container
 export const form = () => {
@@ -16,7 +16,7 @@ export const weatherDataContainer = () => {
 };
 
 const hourly = (weatherData) => {
-    const div = document.querySelector('div#hourly');
+    const div = document.querySelector('div.hourly');
     return weatherData.hourly.forEach(time => {
         const military = time.split('T')[1];
         const weatherCode = time.weatherCode;
@@ -29,7 +29,7 @@ const hourly = (weatherData) => {
         span.className = 'hour';
         pTime.className = 'time';
         pTemp.className = 'temperature';
-        i.className = weatherIcons[weatherCode];
+        i.className = weatherIcons.weatherCode;
         
         pTime.textContent = military;
         pTemp.textContent = time.temperature;
@@ -40,14 +40,14 @@ const hourly = (weatherData) => {
 };
 
 const weatherDetailsContainer = () => {
-    const div = document.createElement('div');
-    const conditionsProverb = document.createElement('div');
+    const div = document.querySelector('div.weatherDetailsContainer');
+    const conditionsProverb = document.querySelector('div.conditionsProverb');
     conditionsProverb.append(conditions, proverb);
     div.append(daily, conditionsProverb);
 };
 
 const daily = (weatherData) => {
-    const div = document.querySelector('div#daily');
+    const div = document.querySelector('div.daily');
     return weatherData.daily.forEach(date => {
         const weatherCode = date.weatherCode;
         // 1. Create
@@ -77,8 +77,8 @@ const daily = (weatherData) => {
 };
 
 const conditions = () => {
-    const daily = document.querySelector('div#daily');
-    const div = document.querySelector('div#conditions');
+    const daily = document.querySelector('div.daily');
+    const div = document.querySelector('div.conditions');
     daily.addEventListener('click', (e) => {
         div.innerHTML = '';
         if (!e.target.classList.contains("clicked")) {
@@ -105,7 +105,7 @@ const conditions = () => {
 };
 
 const proverb = () => {
-    const div = document.createElement('div');
+    const div = document.querySelector('div.proverb');
     const h3 = document.createElement('h3');
     const p = document.createElement('p');
     

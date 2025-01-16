@@ -24,33 +24,28 @@ export const weatherIcons = {
     99: 'wi wi-thunderstorm',
 };
 
-export const slogan = [
-    {
-        rain: [
-            'If the goose honks high, fair weather. If the goose honks low, foul weather.',
-            'When your joints start to ache, rainy weather is at stake.',
-            'When wooden chairs creak, rain will come within a week.',
-            'When gnats swarm and bite, rain is in sight.',
-        ],
-    },
-    { humidity: 'When pipes smell stronger, it’s going to rain.' },
-    {
-        dry: 'If spiders are many and spinning their webs, the spell will soon be very dry.',
-    },
-    {
-        cold: {
-            name: 'New York',
-            slogan: "It's BRICK outside!",
-        },
-    },
-    {
-        sunset: 'Red sky at night, sailor’s delight; red sky in morning, sailor’s warning.',
-    },
-    { storm: 'When frogs croak loudly, it’s going to rain.' },
-    {
-        snow: 'If a circle forms ‘round the moon, ‘twill rain or snow soon.',
-    },
-    {
-        clear: 'When the morning dew is heavy, rain will not come that day.',
-    },
-];
+export const slogans = {
+    0: 'Clear skies, clear mind!',
+    1: 'If the goose honks high, fair weather. If the goose honks low, foul weather.',
+    2: 'Overcast skies, but the day is still yours to seize!',
+    3: 'When wooden chairs creak, rain will come within a week.',
+    45: 'Fog in the morning, travelers take warning.',
+    48: 'Lost in the mist, but found in the moment.',
+    51: 'A sprinkle of rain, a sprinkle of magic.',
+    53: 'Gentle showers for gentle thoughts.',
+    55: 'Rain before seven, fine by eleven.',
+    61: 'Rainy days are perfect for dreaming big.',
+    63: 'Let the rain wash away the stress.',
+    65: 'Raindrops keep falling, and so should your worries.',
+    66: 'Rain mixed with snow, nature\’s perfect duo.',
+    67: 'When pipes smell stronger, it\’s going to rain.',
+    71: 'Snowflakes are kisses from the sky.',
+    73: 'When the wind whistles through the trees, snow is on its way.',
+    75: 'Blankets of snow, blankets of joy.',
+    80: 'April showers bring May flowers.',
+    81: 'Thunderstorms: nature\’s drumroll.',
+    82: 'Feel the power of the storm!',
+    95: 'Red sky at night, sailor\’s delight.',
+    96: 'When the sky growls, listen to its story.',
+    99: 'Electric skies, electric vibes!'
+};
