@@ -17,7 +17,7 @@ export const weatherDataContainer = () => {
 
 const hourly = (weatherData) => {
     const div = document.querySelector('div#hourly');
-    weatherData.hourly.forEach(time => {
+    return weatherData.hourly.forEach(time => {
         const military = time.split('T')[1];
         const weatherCode = time.weatherCode;
         // 1. Create
@@ -48,12 +48,11 @@ const weatherDetailsContainer = () => {
 
 const daily = (weatherData) => {
     const div = document.querySelector('div#daily');
-    weatherData.daily.forEach(date => {
+    return weatherData.daily.forEach(date => {
         const weatherCode = date.weatherCode;
         // 1. Create
         const span = document.createElement('span');
         const pDay = document.createElement('p');
-        const pTemp = document.createElement('p');
         const i = document.createElement('i');
         // 2. Modify
         if (date === weatherData.current.time.split("T")[0]) {
@@ -61,19 +60,49 @@ const daily = (weatherData) => {
             pDay.textContent = "Today";
         };
         span.className = 'none';
+        span.id = date;
+        span.dataset.date = date;
+        span.dataset.high = date.maxTemperature;
+        span.dataset.low = date.minTemperature;
+        span.dataset.precipitation = date.precipitation;
+        span.dataset.windDirection = date.windDirection;
         pDay.className = 'day';
-        pTemp.className = 'temperature';
         i.className = weatherIcons[weatherCode];
         
         pDay.textContent = date.day;
-        pTemp.textContent = `${date.minTemperature} / ${date.maxTemperature}`;
         // 3. Append
-        span.append(pDay, i, pTemp);
+        span.append(pDay, i);
         div.append(span);
     });
 };
 
-const conditions = () => {};
+const conditions = () => {
+    const daily = document.querySelector('div#daily');
+    const div = document.querySelector('div#conditions');
+    daily.addEventListener('click', (e) => {
+        div.innerHTML = '';
+        if (!e.target.classList.contains("clicked")) {
+            return;
+        };
+        // 1. Create
+        const pHigh = document.createElement('p');
+        const pLow = document.createElement('p');
+        const pPrecipitation = document.createElement('p');
+        const pWindDirection = document.createElement('p');
+        // 2. Modify
+        pHigh.className = 'details';
+        pLow.className = 'details';
+        pPrecipitation.className = 'details';
+        pWindDirection.className = 'details';
+        
+        pHigh.textContent = span.dataset.high;
+        pLow.textContent = span.dataset.low;
+        pPrecipitation.textContent = span.dataset.precipitation;
+        pWindDirection.textContent = span.dataset.windDirection;
+        // 3. Append
+        div.append(pHigh, pLow, pPrecipitation, pWindDirection);
+    })
+};
 
 const proverb = () => {
     const div = document.createElement('div');
