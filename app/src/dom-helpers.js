@@ -1,3 +1,5 @@
+import 
+
 // Form Container
 export const form = () => {
     const form = document.createElement('form');
@@ -16,15 +18,19 @@ export const weatherDataContainer = () => {
 
 const hourly = (data) => {
     const div = document.createElement('div');
+    data.hourly[time]
     const span = document.createElement('span');
-    const h3Time = document.createElement('h3');
-    const h3Temp = document.createElement('h3');
+    const pTime = document.createElement('p');
+    pTime.id = 'time';
+    const pTemp = document.createElement('p');
+    pTemp.id = 'temperature';
     const i = document.createElement('i');
     const weatherCode = data.hourly.time[weatherCode];
-    i.className = weatherCode;
+    i.className = weatherIcons[weatherCode];
     h3Time.textContent = data.hourly[time];
     h3Temp.textContent = data.hourly.time[temperature];
-    div.append(h3Time, i, h3Temp);
+    span.append(h3Time, i, h3Temp);
+    div.append(span);
 }
 
 const weatherDetailsContainer = () => {
