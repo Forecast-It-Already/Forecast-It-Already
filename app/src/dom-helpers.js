@@ -18,17 +18,22 @@ export const weatherDataContainer = () => {
 const hourly = (weatherData) => {
     const div = document.querySelector('div#hourly');
     data.hourly[time].forEach(time => {
-        // const span = document.createElement('span');
-        
+        const military = time.split('T')[1];
+        const weatherCode = time.weatherCode;
+        // 1. Create
+        const span = document.createElement('span');
         const pTime = document.createElement('p');
-        pTime.class = 'time';
         const pTemp = document.createElement('p');
-        pTemp.class = 'temperature';
         const i = document.createElement('i');
-        const weatherCode = weatherData.hourly.time[weatherCode];
+        // 2. Modify
+        span.className = 'hour';
+        pTime.className = 'time';
+        pTemp.className = 'temperature';
         i.className = weatherIcons[weatherCode];
-        pTime.textContent = weatherData.hourly[time];
-        pTemp.textContent = weatherData.hourly.time[temperature];
+        
+        pTime.textContent = military;
+        pTemp.textContent = time.temperature;
+        // 3. Append
         span.append(pTime, i, pTemp);
         div.append(span);
     });
@@ -44,20 +49,20 @@ const weatherDetailsContainer = () => {
 const daily = (weatherData) => {
     const div = document.querySelector('div#daily');
     weatherData.daily.forEach(date => {
+        const weatherCode = date.weatherCode;
         // 1. Create
         const span = document.createElement('span');
         const pDay = document.createElement('p');
         const pTemp = document.createElement('p');
         const i = document.createElement('i');
-        const weatherCode = date.weatherCode;
         // 2. Modify
         if (date === weatherData.current.time.split("T")[0]) {
-            span.class = 'clicked';
+            span.className = 'clicked';
             pDay.textContent = "Today";
         };
-        span.class = 'none';
-        pDay.class = 'day';
-        pTemp.class = 'temperature';
+        span.className = 'none';
+        pDay.className = 'day';
+        pTemp.className = 'temperature';
         i.className = weatherIcons[weatherCode];
         
         pDay.textContent = date.day;
