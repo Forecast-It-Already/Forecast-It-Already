@@ -3,6 +3,14 @@
     <head>
         <meta charset="UTF-8" />
         <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+        />
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/weather-icons/2.0.10/css/weather-icons.min.css"
+        />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Forecast It Already!</title>
     </head>
@@ -23,9 +31,36 @@
                     </span>
                 </button>
             </header>
-            <div>
-                <input type="text" id="search">
-            </div>
+
+            <section>
+                <div class="weather-icon-time-form-container">
+                    <div class="weather-icon-temperature-time-container">
+                        <i
+                            id="current-weather-icon"
+                            class="wi wi-day-sunny"
+                        ></i>
+                        <div class="weather-temperature-time-container">
+                            <h3 id="current-weather-temperature">59°F</h3>
+                            <h1 id="current-weather-time">12:00 PM</h1>
+                        </div>
+                    </div>
+
+                    <div class="current-weather-form-container">
+                        <form id="weather-form">
+                            <input
+                                type="text"
+                                name="searchLocation"
+                                id="search-location-input"
+                                placeholder="Search Weather Information"
+                            />
+                        </form>
+
+                        <div class="current-weather-container">
+                            <h2 id="current-weather-title">New York City</h2>
+                        </div>
+                    </div>
+                </div>
+            </section>
         </div>
         <script type="module" src="/src/main.js"></script>
     </body>
