@@ -9,7 +9,7 @@ export const form = (weatherData) => {
     const h1 = document.querySelector('h1#current-weather-time');
     // 2. Modify
     h2.textContent = weatherData.name;
-    i.className = weatherIcons.weatherData.weatherCode;
+    i.className = weatherIcons[weatherData.weatherCode];
     h3.textContent = weatherData.current.temperature;
     h1.textContent = weatherData.current.time.split('T')[1];
 };
@@ -22,9 +22,9 @@ export const weatherDataContainer = () => {
 
 const hourly = (weatherData) => {
     const div = document.querySelector('div.hourly');
-    return weatherData.hourly.forEach(time => {
+    return Object.entries(weatherData.hourly).forEach(([time, data]) => {
         const military = time.split('T')[1];
-        const weatherCode = time.weatherCode;
+        const weatherCode = data.weatherCode;
         // 1. Create
         const span = document.createElement('span');
         const pTime = document.createElement('p');
@@ -34,7 +34,7 @@ const hourly = (weatherData) => {
         span.className = 'hour';
         pTime.className = 'time';
         pTemp.className = 'temperature';
-        i.className = weatherIcons.weatherCode;
+        i.className = weatherIcons[weatherCode];
         
         pTime.textContent = military;
         pTemp.textContent = time.temperature;
@@ -53,8 +53,8 @@ const weatherDetailsContainer = () => {
 
 const daily = (weatherData) => {
     const div = document.querySelector('div.daily');
-    return weatherData.daily.forEach(date => {
-        const weatherCode = date.weatherCode;
+    return Object.entries(weatherData.daily).forEach(([date, data]) => {
+        const weatherCode = data.weatherCode;
         // 1. Create
         const span = document.createElement('span');
         const pDay = document.createElement('p');
@@ -87,9 +87,8 @@ const conditions = () => {
     const div = document.querySelector('div.conditions');
     daily.addEventListener('click', (e) => {
         div.innerHTML = '';
-        if (!e.target.classList.contains("clicked")) {
-            return;
-        };
+        const span = e.target.closest('span');
+        if (!span || !span.classList.contains("clicked")) return;
         // 1. Create
         const pHigh = document.createElement('p');
         const pLow = document.createElement('p');
@@ -101,10 +100,10 @@ const conditions = () => {
         pPrecipitation.className = 'details';
         pWindDirection.className = 'details';
         
-        pHigh.textContent = span.dataset.high;
-        pLow.textContent = span.dataset.low;
-        pPrecipitation.textContent = span.dataset.precipitation;
-        pWindDirection.textContent = span.dataset.windDirection;
+        pHigh.textContent = `High: ${span.dataset.high}°F`;
+        pLow.textContent = `Low: ${span.dataset.low}°F`;
+        pPrecipitation.textContent = `Precipitation: ${span.dataset.precipitation} inches`;
+        pWindDirection.textContent = `Wind Direction: ${span.dataset.windDirection}°`;
         // 3. Append
         div.append(pHigh, pLow, pPrecipitation, pWindDirection);
     });
@@ -122,8 +121,10 @@ const proverb = () => {
         const h3 = document.createElement('h3');
         const p = document.createElement('p');
         // 2. Modify
-        h3.textContent = `${slogans.span.dataset.weatherCode.name}:`;
-        p.textContent = slogans.span.dataset.weatherCode.phrase;
+        const weatherCode = e.target.closest('span').dataset.weatherCode;
+        const sloganData = slogans[weatherCode];
+        h3.textContent = `${sloganData.name}:`;
+        p.textContent = sloganData.phrase;
         // 3. Create
         div.append(h3, p);
     });
