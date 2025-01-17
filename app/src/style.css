@@ -150,3 +150,119 @@ header {
 #current-weather-temperature {
     font-size: 3rem;
 }
+
+/* Second part of the section */
+.second {
+    border: 1px solid red;
+}
+
+.weather-data-container {
+    border: 1px solid orange;
+    display: flex;
+    gap: 2rem;
+}
+
+/* Start of Hourly Container */
+.hourly {
+    border: 1px solid green;
+    display: grid;
+    grid-auto-flow: row;
+    grid-auto-columns: 15rem;
+    
+    overflow-x: auto;
+    overscroll-behavior: contain;
+}
+
+.hour {
+    display: flex;
+    justify-content: space-evenly;
+    gap: 10px;
+    font-size: 20px;
+    padding: 10px;
+}
+
+.hour i {
+    font-size: 30px;
+    text-align: center;
+}
+
+.hour p {
+    padding: 5px;
+}
+/* End of Hourly Container */
+
+.weather-details-container {
+    border: 1px solid blue;
+    padding: 1rem;
+    width: 80%;
+}
+
+.conditions-proverb {
+    border: 1px solid purple;
+    display: flex;
+    justify-content: space-evenly;
+    padding: 1rem;
+}
+
+/* Start of Daily Container */
+.daily {
+    border: 1px solid hotpink;
+    display: flex;
+    gap: 2rem;
+    justify-content: space-evenly;
+}
+
+.clicked {
+    background-color: gray;
+    border-radius: 20%;
+    text-align: center;
+    padding: 10px;
+}
+
+.none {
+    background-color: none;
+    text-align: center;
+    padding: 10px;
+}
+
+.daily i {
+    font-size: 40px;
+    padding: 20px;
+}
+
+.day {
+    font-size: 25px;
+}
+/* End of Daily Container */
+
+/* Start of Conditions Container */
+.conditions {
+    border: 1px solid darkorchid;
+    display: inline-block;
+    font-size: 1.5rem;
+}
+
+.details {
+    text-align: center;
+    padding: 1rem;
+}
+/* End of Conditions Container */
+
+/* Start of Proverb Container */
+.proverb {
+    border: 1px solid brown;
+    display: inline-block;
+    text-align: center;
+    width: 50%;
+}
+
+.proverb h3 {
+    font-size: 3rem;
+    padding: 1rem;
+}
+
+.proverb p {
+    font-size: 2rem;
+    padding: 2rem;
+}
+/* End of Proverb Container */
