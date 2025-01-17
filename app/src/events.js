@@ -1,11 +1,6 @@
 import { renderTheme, renderWeatherData } from './dom-helpers.js';
 import { getGeoCoding, getWeatherData } from './fetch.js';
-import {
-    getTemperatureUnit,
-    getTheme,
-    updateTempUnit,
-    updateTheme,
-} from './storage.js';
+import { getTemperatureUnit, updateTempUnit, updateTheme } from './storage.js';
 
 const temperatureUnitButton = document.getElementById('temperature-switch');
 
