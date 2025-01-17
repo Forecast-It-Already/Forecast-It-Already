@@ -3,6 +3,7 @@
  * @param {number} latitude
  * @param {number} longitude
  * @param {string} name - The name of the location.
+ * @param {string} unit - The temperature unit
  * @returns {Object} - Organized weather data including current, hourly, and daily forecasts.
  */
 export const getWeatherData = async (latitude, longitude, name, unit) => {
@@ -11,7 +12,7 @@ export const getWeatherData = async (latitude, longitude, name, unit) => {
         latitude
     )}&longitude=${encodeURI(
         longitude
-    )}&current=temperature_2m,precipitation,wind_direction_10m&hourly=temperature_2m,weather_code&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_sum,wind_direction_10m_dominant&temperature_unit=${unit}&precipitation_unit=inch&timezone=America%2FNew_York`;
+    )}&current=temperature_2m,precipitation,weather_code,wind_direction_10m&hourly=temperature_2m,weather_code&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_sum,wind_direction_10m_dominant&temperature_unit=${unit}&precipitation_unit=inch&timezone=America%2FNew_York`;
 
     try {
         const response = await fetch(url);
@@ -109,6 +110,7 @@ export const getWeatherData = async (latitude, longitude, name, unit) => {
                 windDirection:
                     data.current['wind_direction_10m'] +
                     (currentUnits['wind_direction_10m'] || '°'),
+                weatherCode: data.current['weather_code'],
             },
             hourly, // Organized hourly forecast.
             daily, // Organized daily forecast.

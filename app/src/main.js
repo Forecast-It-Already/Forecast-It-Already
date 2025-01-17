@@ -1,14 +1,7 @@
-import { initializeTempUnit } from './storage.js';
-import { form, weatherDataContainer, weatherDetailsContainer } from './dom-helpers.js';
 import './events.js';
-import './style.css';
+import { renderWeatherData } from './dom-helpers.js';
 
-const main = () => {
-    form();
-    weatherDataContainer();
-    weatherDetailsContainer();
+const main = async () => {
+    await renderWeatherData();
 };
 main();
-
-const temperatureUnit = initializeTempUnit();
-initializeTempUnit();
