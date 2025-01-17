@@ -5,7 +5,7 @@ import { initializeTempUnit } from './storage.js';
 // Form Container
 export const form = (weatherData, parent) => {
     console.log({ weatherData });
-    // 1. Create
+    
     document.querySelector('h2#current-weather-title').textContent =
         weatherData.name;
 
