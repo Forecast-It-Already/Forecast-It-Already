@@ -42,6 +42,8 @@ body.dark {
     --secondary: #465a5d;
     --accent: #7c8f9c;
     --border: rgba(255, 255, 255, 0.1);
+
+    color-scheme: dark;
 }
 
 body {
@@ -95,6 +97,7 @@ header {
 
 .active-temperature {
     background-color: var(--accent);
+    color: var(--secondary-text);
 }
 
 /* Container for the weather icon, time and form */
@@ -153,24 +156,22 @@ header {
 
 /* Second part of the section */
 .second {
-    border: 1px solid red;
+    border: 1px solid var(--border);
 }
 
 .weather-data-container {
-    border: 1px solid orange;
     display: flex;
-    gap: 2rem;
+    justify-content: center;
+    max-height: 500px;
 }
 
 /* Start of Hourly Container */
 .hourly {
-    border: 1px solid green;
     display: grid;
     grid-auto-flow: row;
     grid-auto-columns: 15rem;
-    
-    overflow-x: auto;
-    overscroll-behavior: contain;
+    overflow-x: scroll;
+    min-width: fit-content;
 }
 
 .hour {
@@ -179,6 +180,8 @@ header {
     gap: 10px;
     font-size: 20px;
     padding: 10px;
+    border: 1px solid var(--border);
+    border-radius: var(--border-radius);
 }
 
 .hour i {
@@ -192,13 +195,13 @@ header {
 /* End of Hourly Container */
 
 .weather-details-container {
-    border: 1px solid blue;
-    padding: 1rem;
-    width: 80%;
+    width: 100%;
+    align-self: center;
 }
 
 .conditions-proverb {
-    border: 1px solid purple;
+    border: 1px solid var(--border);
+    border-radius: var(--border-radius);
     display: flex;
     justify-content: space-evenly;
     padding: 1rem;
@@ -206,15 +209,18 @@ header {
 
 /* Start of Daily Container */
 .daily {
-    border: 1px solid hotpink;
+    border: 1px solid var(--border);
+    border-radius: var(--border-radius);
     display: flex;
     gap: 2rem;
     justify-content: space-evenly;
+    padding: 1rem;
 }
 
 .clicked {
-    background-color: gray;
-    border-radius: 20%;
+    background-color: var(--accent);
+    color: var(--secondary-text);
+    border-radius: var(--border-radius);
     text-align: center;
     padding: 10px;
 }
@@ -237,9 +243,9 @@ header {
 
 /* Start of Conditions Container */
 .conditions {
-    border: 1px solid darkorchid;
     display: inline-block;
     font-size: 1.5rem;
+    width: 50%;
 }
 
 .details {
@@ -250,7 +256,6 @@ header {
 
 /* Start of Proverb Container */
 .proverb {
-    border: 1px solid brown;
     display: inline-block;
     text-align: center;
     width: 50%;
