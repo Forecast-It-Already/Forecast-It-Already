@@ -1,11 +1,9 @@
 import { weatherIcons, slogans } from './constants.js';
 import { getWeatherData } from './fetch.js';
-import { initializeTempUnit } from './storage.js';
+import { getTemperatureUnit } from './storage.js';
 
 // Form Container
-export const form = (weatherData, parent) => {
-    console.log({ weatherData });
-    
+export const form = (weatherData) => {
     document.querySelector('h2#current-weather-title').textContent =
         weatherData.name;
 
@@ -21,9 +19,10 @@ export const form = (weatherData, parent) => {
 
 const hourly = (weatherData) => {
     const div = document.querySelector('div.hourly');
+
+    div.innerHTML = ``;
+
     Object.entries(weatherData.hourly).forEach(([time, data]) => {
-        // console.log({ time, data });
-        
         const military = time.split('T')[1];
         const weatherCode = data.weatherCode;
 
@@ -50,16 +49,16 @@ const hourly = (weatherData) => {
 
 const daily = (weatherData) => {
     const div = document.querySelector('div.daily');
+    div.innerHTML = ``;
+
     Object.entries(weatherData.daily).forEach(([date, data]) => {
-        // console.log({date, data});
-       
         const weatherCode = data.weatherCode;
-       
+
         // 1. Create
         const span = document.createElement('span');
         const pDay = document.createElement('p');
         const i = document.createElement('i');
-       
+
         // 2. Modify
         if (date === weatherData.current.time.split('T')[0]) {
             span.className = 'clicked';
@@ -77,28 +76,40 @@ const daily = (weatherData) => {
         i.className = weatherIcons[weatherCode];
 
         pDay.textContent = data.day;
-       
+
         // 3. Append
         span.append(pDay, i);
         div.append(span);
     });
 };
 
-const conditions = (parent) => {
+const conditions = () => {
     const daily = document.querySelector('div.daily');
     const div = document.querySelector('div.conditions');
-    
+
     daily.addEventListener('click', (e) => {
-        div.innerHTML = '';
         const span = e.target.closest('span');
-        if (!span || !span.classList.contains('clicked')) return;
-        
+
+        if (!span) {
+            return;
+        }
+
+        div.innerHTML = '';
+
+        const previousClicked = document.querySelector('.clicked');
+
+        if (previousClicked) {
+            previousClicked.className = 'none';
+        }
+
+        span.className = 'clicked';
+
         // 1. Create
         const pHigh = document.createElement('p');
         const pLow = document.createElement('p');
         const pPrecipitation = document.createElement('p');
         const pWindDirection = document.createElement('p');
-        
+
         // 2. Modify
         pHigh.className = 'details';
         pLow.className = 'details';
@@ -109,10 +120,12 @@ const conditions = (parent) => {
         pLow.textContent = `Low: ${span.dataset.low}°F`;
         pPrecipitation.textContent = `Precipitation: ${span.dataset.precipitation} inches`;
         pWindDirection.textContent = `Wind Direction: ${span.dataset.windDirection}°`;
-        
+
         // 3. Append
         div.append(pHigh, pLow, pPrecipitation, pWindDirection);
     });
+
+    document.querySelectorAll('.none')[0].click();
 };
 
 const proverb = (parent) => {
@@ -136,16 +149,27 @@ const proverb = (parent) => {
     });
 };
 
-export const renderWeatherData = async () => {
-    const temperatureUnit = initializeTempUnit();
-    const weatherData = await getWeatherData(
-        40.6501,
-        -73.94958,
-        'Brooklyn',
-        temperatureUnit
-    );
-
+const renderContainers = (weatherData) => {
     form(weatherData);
     hourly(weatherData);
     daily(weatherData);
+    conditions(weatherData);
+};
+
+export const renderWeatherData = async (weatherData) => {
+    renderContainers(weatherData);
+    const { latitude, longitude, name } = weatherData;
+
+    document
+        .getElementById('temperature-switch')
+        .addEventListener('click', async () => {
+            const newWeatherData = await getWeatherData(
+                latitude,
+                longitude,
+                name,
+                getTemperatureUnit()
+            );
+
+            renderContainers(newWeatherData);
+        });
 };

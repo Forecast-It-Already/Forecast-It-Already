@@ -18,7 +18,6 @@ temperatureUnitButton.addEventListener('click', (e) => {
     });
 
     updateTempUnit();
-    renderWeatherData();
 });
 
 const weatherForm = document.getElementById('weather-form');
@@ -39,5 +38,5 @@ weatherForm.addEventListener('submit', async (e) => {
 
     e.target.reset();
 
-    // TODO: Render the weather data
+    renderWeatherData(weatherData);
 });

@@ -98,6 +98,8 @@ export const getWeatherData = async (latitude, longitude, name, unit) => {
 
         return {
             name, // Name of the location.
+            latitude: data.latitude,
+            longitude: data.longitude,
             current: {
                 time: data.current.time,
                 temperature:
