@@ -1,8 +1,15 @@
-import { renderWeatherData } from './dom-helpers.js';
+import { renderTheme, renderWeatherData } from './dom-helpers.js';
 import { getGeoCoding, getWeatherData } from './fetch.js';
-import { getTemperatureUnit, updateTempUnit } from './storage.js';
+import {
+    getTemperatureUnit,
+    getTheme,
+    updateTempUnit,
+    updateTheme,
+} from './storage.js';
 
 const temperatureUnitButton = document.getElementById('temperature-switch');
+
+const themeChangeButton = document.getElementById('theme-change-button');
 
 temperatureUnitButton.addEventListener('click', (e) => {
     if (e.target.tagName !== 'SPAN') {
@@ -18,6 +25,11 @@ temperatureUnitButton.addEventListener('click', (e) => {
     });
 
     updateTempUnit();
+});
+
+themeChangeButton.addEventListener('click', () => {
+    const theme = updateTheme();
+    renderTheme(theme);
 });
 
 const weatherForm = document.getElementById('weather-form');

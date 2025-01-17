@@ -19,18 +19,21 @@
         <div id="app">
             <header>
                 <h1 id="header-title">FORECAST IT ALREADY!</h1>
+                <div class="config-container">
+                    <button
+                        id="temperature-switch"
+                        aria-label="Switch temperature unit"
+                    >
+                        <span id="fahrenheit" class="temperature-switch-option">
+                            F
+                        </span>
+                        <span id="celsius" class="temperature-switch-option">
+                            C
+                        </span>
+                    </button>
 
-                <button
-                    id="temperature-switch"
-                    aria-label="Switch temperature unit"
-                >
-                    <span id="fahrenheit" class="temperature-switch-option">
-                        F
-                    </span>
-                    <span id="celsius" class="temperature-switch-option">
-                        C
-                    </span>
-                </button>
+                    <button id="theme-change-button"></button>
+                </div>
             </header>
 
             <section class="first">

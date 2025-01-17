@@ -15,14 +15,16 @@ html {
 
 /* Variables to prevent hard-coding values */
 :root {
-    /* Light Mode Colorscheme */
-    --text: #141a17;
-    --secondary-text: #e5ebe8;
-    --background: #f6f9f8;
-    --primary: #3d524a;
-    --secondary: #a2b6b9;
-    --accent: #637683;
-    --border: rgba(0, 0, 0, 0.1);
+    /* Dark Mode Colorscheme */
+    --text: #e5ebe8;
+    --secondary-text: #141a17;
+    --background: #060908;
+    --primary: #adc2ba;
+    --secondary: #465a5d;
+    --accent: #7c8f9c;
+    --border: rgba(255, 255, 255, 0.1);
+
+    color-scheme: dark;
 
     /* Sizing */
     --gutters: 1rem;
@@ -33,17 +35,17 @@ html {
     When the user selects dark-mode, we will the "dark" class
     to the body element.
 */
-body.dark {
-    /* Update colorscheme to dark mode colors */
-    --text: #e5ebe8;
-    --secondary-text: #141a17;
-    --background: #060908;
-    --primary: #adc2ba;
-    --secondary: #465a5d;
-    --accent: #7c8f9c;
-    --border: rgba(255, 255, 255, 0.1);
+body.light {
+    /* Light Mode Colorscheme */
+    --text: #141a17;
+    --secondary-text: #e5ebe8;
+    --background: #f6f9f8;
+    --primary: #3d524a;
+    --secondary: #a2b6b9;
+    --accent: #637683;
+    --border: rgba(0, 0, 0, 0.1);
 
-    color-scheme: dark;
+    color-scheme: light;
 }
 
 body {
@@ -76,6 +78,11 @@ header {
     height: 70px;
 }
 
+.config-container {
+    display: flex;
+    gap: 1rem;
+}
+
 #temperature-switch {
     display: flex;
     justify-content: center;
@@ -84,6 +91,11 @@ header {
     background-color: var(--background);
     border-radius: var(--border-radius);
     border: 1px solid var(--border);
+}
+
+#theme-change-button {
+    background-color: transparent;
+    font-size: 1.5rem;
 }
 
 .temperature-switch-option {

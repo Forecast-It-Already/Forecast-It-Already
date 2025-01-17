@@ -128,19 +128,33 @@ const conditions = () => {
 const proverb = (span) => {
     const div = document.querySelector('div.proverb');
     div.innerHTML = '';
- 
+
     // 1. Create
     const h3 = document.createElement('h3');
     const p = document.createElement('p');
-    
+
     // 2. Modify
     const weatherCode = span.dataset.weatherCode;
     const sloganData = slogans[weatherCode];
     h3.textContent = `${sloganData.name}:`;
     p.textContent = sloganData.phrase;
-    
+
     // 3. Create
     div.append(h3, p);
+};
+
+export const renderTheme = (theme) => {
+    const themeButton = document.getElementById('theme-change-button');
+
+    let themeClass;
+
+    if (theme === 'dark') {
+        themeClass = 'wi wi-day-sunny';
+    } else {
+        themeClass = 'fas fa-moon';
+    }
+
+    themeButton.innerHTML = `<i class='${themeClass}'></i>`;
 };
 
 const renderContainers = (weatherData) => {
