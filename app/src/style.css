@@ -42,6 +42,8 @@ body.dark {
     --secondary: #465a5d;
     --accent: #7c8f9c;
     --border: rgba(255, 255, 255, 0.1);
+
+    color-scheme: dark;
 }
 
 body {
@@ -95,6 +97,7 @@ header {
 
 .active-temperature {
     background-color: var(--accent);
+    color: var(--secondary-text);
 }
 
 /* Container for the weather icon, time and form */
@@ -150,3 +153,133 @@ header {
 #current-weather-temperature {
     font-size: 3rem;
 }
+
+/* Second part of the section */
+.second {
+    border: 1px solid var(--border);
+}
+
+.weather-data-container {
+    display: flex;
+    justify-content: center;
+    max-height: 500px;
+}
+
+/* Start of Hourly Container */
+.hourly {
+    display: grid;
+    grid-auto-flow: row;
+    grid-auto-columns: 15rem;
+    overflow-x: scroll;
+    min-width: fit-content;
+}
+
+.hour {
+    display: flex;
+    justify-content: space-evenly;
+    gap: 10px;
+    font-size: 20px;
+    padding: 10px;
+    border: 1px solid var(--border);
+    border-radius: var(--border-radius);
+}
+
+.hour i {
+    font-size: 30px;
+    text-align: center;
+}
+
+.hour p {
+    padding: 5px;
+}
+/* End of Hourly Container */
+
+.weather-details-container {
+    width: 100%;
+    align-self: center;
+}
+
+.conditions-proverb {
+    border: 1px solid var(--border);
+    border-radius: var(--border-radius);
+    display: flex;
+    justify-content: space-evenly;
+    padding: 1rem;
+}
+
+/* Start of Daily Container */
+.daily {
+    border: 1px solid var(--border);
+    border-radius: var(--border-radius);
+    display: flex;
+    gap: 2rem;
+    justify-content: space-evenly;
+    padding: 1rem;
+    overflow-x: scroll;
+}
+
+.daily span {
+    cursor: pointer;
+}
+
+.clicked {
+    background-color: var(--accent);
+    color: var(--secondary-text);
+    border-radius: var(--border-radius);
+    text-align: center;
+    padding: 10px;
+}
+
+.none {
+    background-color: none;
+    text-align: center;
+    padding: 10px;
+    border-radius: var(--border-radius);
+    transition: opacity 0.25s linear, background-color 0.25s linear;
+}
+
+.none:hover {
+    background-color: var(--accent);
+    opacity: 0.9;
+}
+
+.daily i {
+    font-size: 40px;
+    padding: 20px;
+}
+
+.day {
+    font-size: 25px;
+}
+/* End of Daily Container */
+
+/* Start of Conditions Container */
+.conditions {
+    display: inline-block;
+    font-size: 1.5rem;
+    width: 50%;
+}
+
+.details {
+    text-align: center;
+    padding: 1rem;
+}
+/* End of Conditions Container */
+
+/* Start of Proverb Container */
+.proverb {
+    display: inline-block;
+    text-align: center;
+    width: 50%;
+}
+
+.proverb h3 {
+    font-size: 3rem;
+    padding: 1rem;
+}
+
+.proverb p {
+    font-size: 2rem;
+    padding: 2rem;
+}
+/* End of Proverb Container */
