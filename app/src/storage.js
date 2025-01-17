@@ -69,3 +69,11 @@ export const updateTempUnit = () => {
 
     return newTemperatureUnit;
 };
+
+export const getLocation = () => {
+    return getLocalStorage('location');
+};
+
+export const updateLocation = (location) => {
+    setLocalStorage('location', location);
+};

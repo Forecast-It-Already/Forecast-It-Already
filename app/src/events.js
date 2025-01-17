@@ -1,6 +1,11 @@
 import { renderTheme, renderWeatherData } from './dom-helpers.js';
 import { getGeoCoding, getWeatherData } from './fetch.js';
-import { getTemperatureUnit, updateTempUnit, updateTheme } from './storage.js';
+import {
+    getTemperatureUnit,
+    updateLocation,
+    updateTempUnit,
+    updateTheme,
+} from './storage.js';
 
 const temperatureUnitButton = document.getElementById('temperature-switch');
 
@@ -46,4 +51,5 @@ weatherForm.addEventListener('submit', async (e) => {
     e.target.reset();
 
     renderWeatherData(weatherData);
+    updateLocation({ latitude, longitude, name });
 });
