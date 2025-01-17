@@ -21,7 +21,9 @@ export const form = (weatherData, parent) => {
 
 const hourly = (weatherData) => {
     const div = document.querySelector('div.hourly');
-    return Object.entries(weatherData.hourly).forEach(([time, data]) => {
+    Object.entries(weatherData.hourly).forEach(([time, data]) => {
+        // console.log({ time, data });
+        
         const military = time.split('T')[1];
         const weatherCode = data.weatherCode;
 
@@ -48,12 +50,16 @@ const hourly = (weatherData) => {
 
 const daily = (weatherData) => {
     const div = document.querySelector('div.daily');
-    return Object.entries(weatherData.daily).forEach(([date, data]) => {
+    Object.entries(weatherData.daily).forEach(([date, data]) => {
+        // console.log({date, data});
+       
         const weatherCode = data.weatherCode;
+       
         // 1. Create
         const span = document.createElement('span');
         const pDay = document.createElement('p');
         const i = document.createElement('i');
+       
         // 2. Modify
         if (date === weatherData.current.time.split('T')[0]) {
             span.className = 'clicked';
@@ -63,14 +69,15 @@ const daily = (weatherData) => {
         span.id = date;
         span.dataset.date = date;
         span.dataset.weatherCode = weatherCode;
-        span.dataset.high = date.maxTemperature;
-        span.dataset.low = date.minTemperature;
-        span.dataset.precipitation = date.precipitation;
-        span.dataset.windDirection = date.windDirection;
+        span.dataset.high = data.maxTemperature;
+        span.dataset.low = data.minTemperature;
+        span.dataset.precipitation = data.precipitation;
+        span.dataset.windDirection = data.windDirection;
         pDay.className = 'day';
         i.className = weatherIcons[weatherCode];
 
-        pDay.textContent = date.day;
+        pDay.textContent = data.day;
+       
         // 3. Append
         span.append(pDay, i);
         div.append(span);
@@ -80,15 +87,18 @@ const daily = (weatherData) => {
 const conditions = (parent) => {
     const daily = document.querySelector('div.daily');
     const div = document.querySelector('div.conditions');
+    
     daily.addEventListener('click', (e) => {
         div.innerHTML = '';
         const span = e.target.closest('span');
         if (!span || !span.classList.contains('clicked')) return;
+        
         // 1. Create
         const pHigh = document.createElement('p');
         const pLow = document.createElement('p');
         const pPrecipitation = document.createElement('p');
         const pWindDirection = document.createElement('p');
+        
         // 2. Modify
         pHigh.className = 'details';
         pLow.className = 'details';
@@ -99,6 +109,7 @@ const conditions = (parent) => {
         pLow.textContent = `Low: ${span.dataset.low}°F`;
         pPrecipitation.textContent = `Precipitation: ${span.dataset.precipitation} inches`;
         pWindDirection.textContent = `Wind Direction: ${span.dataset.windDirection}°`;
+        
         // 3. Append
         div.append(pHigh, pLow, pPrecipitation, pWindDirection);
     });
