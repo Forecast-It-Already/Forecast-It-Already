@@ -1,3 +1,5 @@
+import { renderTheme } from './dom-helpers.js';
+
 const setLocalStorage = (key, value) => {
     localStorage.setItem(key, JSON.stringify(value));
 };
@@ -8,6 +10,10 @@ const getLocalStorage = (key) => {
 
 export const getTemperatureUnit = () => {
     return getLocalStorage('temperature-unit');
+};
+
+export const getTheme = () => {
+    return getLocalStorage('theme');
 };
 
 export const initializeTempUnit = () => {
@@ -21,6 +27,31 @@ export const initializeTempUnit = () => {
     document.getElementById(temperature).classList.add('active-temperature');
 
     return temperature;
+};
+
+export const updateTheme = () => {
+    const newTheme = getTheme() === 'dark' ? 'light' : 'dark';
+
+    setLocalStorage('theme', newTheme);
+
+    document.body.classList.remove('light', 'dark');
+    document.body.classList.add(newTheme);
+
+    return newTheme;
+};
+
+export const initializeTheme = () => {
+    let theme = getTheme();
+
+    if (!theme) {
+        theme = 'light';
+        setLocalStorage('theme', theme);
+    }
+
+    document.body.className = '';
+    document.body.className = theme;
+
+    renderTheme(theme);
 };
 
 export const updateTempUnit = () => {
