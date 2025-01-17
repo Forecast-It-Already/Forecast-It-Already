@@ -90,17 +90,13 @@ const conditions = () => {
     daily.addEventListener('click', (e) => {
         const span = e.target.closest('span');
 
-        if (!span) {
-            return;
-        }
+        if (!span) return;
 
         div.innerHTML = '';
 
         const previousClicked = document.querySelector('.clicked');
 
-        if (previousClicked) {
-            previousClicked.className = 'none';
-        }
+        if (previousClicked) previousClicked.className = 'none';
 
         span.className = 'clicked';
 
@@ -123,30 +119,28 @@ const conditions = () => {
 
         // 3. Append
         div.append(pHigh, pLow, pPrecipitation, pWindDirection);
+        proverb(span);
     });
 
     document.querySelectorAll('.none')[0].click();
 };
 
-const proverb = (parent) => {
-    const daily = document.querySelector('div.daily');
+const proverb = (span) => {
     const div = document.querySelector('div.proverb');
-    daily.addEventListener('click', (e) => {
-        div.innerHTML = '';
-        if (!e.target.classList.contains('clicked')) {
-            return;
-        }
-        // 1. Create
-        const h3 = document.createElement('h3');
-        const p = document.createElement('p');
-        // 2. Modify
-        const weatherCode = e.target.closest('span').dataset.weatherCode;
-        const sloganData = slogans[weatherCode];
-        h3.textContent = `${sloganData.name}:`;
-        p.textContent = sloganData.phrase;
-        // 3. Create
-        div.append(h3, p);
-    });
+    div.innerHTML = '';
+ 
+    // 1. Create
+    const h3 = document.createElement('h3');
+    const p = document.createElement('p');
+    
+    // 2. Modify
+    const weatherCode = span.dataset.weatherCode;
+    const sloganData = slogans[weatherCode];
+    h3.textContent = `${sloganData.name}:`;
+    p.textContent = sloganData.phrase;
+    
+    // 3. Create
+    div.append(h3, p);
 };
 
 const renderContainers = (weatherData) => {
