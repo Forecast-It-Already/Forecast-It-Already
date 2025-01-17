@@ -19,17 +19,18 @@ export const form = (weatherData, parent) => {
         weatherData.current.time.split('T')[1];
 };
 
-const hourly = (weatherData, parent) => {
+const hourly = (weatherData) => {
     const div = document.querySelector('div.hourly');
     return Object.entries(weatherData.hourly).forEach(([time, data]) => {
-        console.log({ time, data });
         const military = time.split('T')[1];
         const weatherCode = data.weatherCode;
+
         // 1. Create
         const span = document.createElement('span');
         const pTime = document.createElement('p');
         const pTemp = document.createElement('p');
         const i = document.createElement('i');
+
         // 2. Modify
         span.className = 'hour';
         pTime.className = 'time';
@@ -37,14 +38,15 @@ const hourly = (weatherData, parent) => {
         i.className = weatherIcons[weatherCode];
 
         pTime.textContent = military;
-        pTemp.textContent = time.temperature;
+        pTemp.textContent = data.temperature;
+
         // 3. Append
         span.append(pTime, i, pTemp);
         div.append(span);
     });
 };
 
-const daily = (weatherData, parent) => {
+const daily = (weatherData) => {
     const div = document.querySelector('div.daily');
     return Object.entries(weatherData.daily).forEach(([date, data]) => {
         const weatherCode = data.weatherCode;
@@ -133,4 +135,6 @@ export const renderWeatherData = async () => {
     );
 
     form(weatherData);
+    hourly(weatherData);
+    daily(weatherData);
 };
