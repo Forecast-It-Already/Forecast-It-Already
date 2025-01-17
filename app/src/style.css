@@ -217,6 +217,10 @@ header {
     padding: 1rem;
 }
 
+.daily span {
+    cursor: pointer;
+}
+
 .clicked {
     background-color: var(--accent);
     color: var(--secondary-text);
@@ -229,6 +233,13 @@ header {
     background-color: none;
     text-align: center;
     padding: 10px;
+    border-radius: var(--border-radius);
+    transition: opacity 0.25s linear, background-color 0.25s linear;
+}
+
+.none:hover {
+    background-color: var(--accent);
+    opacity: 0.9;
 }
 
 .daily i {
