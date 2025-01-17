@@ -44,7 +44,8 @@ const hourly = (weatherData) => {
     });
 };
 
-const weatherDetailsContainer = () => {
+// Weather Details Container
+export const weatherDetailsContainer = () => {
     const div = document.querySelector('div.weather-details-container');
     const conditionsProverb = document.querySelector('div.conditions-proverb');
     conditionsProverb.append(conditions, proverb);
