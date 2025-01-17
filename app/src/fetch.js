@@ -3,6 +3,7 @@
  * @param {number} latitude
  * @param {number} longitude
  * @param {string} name - The name of the location.
+ * @param {string} unit - The temperature unit
  * @returns {Object} - Organized weather data including current, hourly, and daily forecasts.
  */
 export const getWeatherData = async (latitude, longitude, name, unit) => {
@@ -11,7 +12,7 @@ export const getWeatherData = async (latitude, longitude, name, unit) => {
         latitude
     )}&longitude=${encodeURI(
         longitude
-    )}&current=temperature_2m,precipitation,wind_direction_10m&hourly=temperature_2m,weather_code&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_sum,wind_direction_10m_dominant&temperature_unit=${unit}&precipitation_unit=inch&timezone=America%2FNew_York`;
+    )}&current=temperature_2m,precipitation,weather_code,wind_direction_10m&hourly=temperature_2m,weather_code&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_sum,wind_direction_10m_dominant&temperature_unit=${unit}&precipitation_unit=inch&timezone=America%2FNew_York`;
 
     try {
         const response = await fetch(url);
@@ -52,8 +53,12 @@ export const getWeatherData = async (latitude, longitude, name, unit) => {
             daily[key] = {
                 day: daysOfWeek[day],
                 weatherCode: data.daily.weather_code[index],
-                minTemperature: data.daily['temperature_2m_min'][index],
-                maxTemperature: data.daily['temperature_2m_max'][index],
+                minTemperature: Math.round(
+                    data.daily['temperature_2m_min'][index]
+                ),
+                maxTemperature: Math.round(
+                    data.daily['temperature_2m_max'][index]
+                ),
                 precipitation: data.daily['precipitation_sum'][index],
                 windDirection: data.daily['wind_direction_10m_dominant'][index],
             };
@@ -68,20 +73,15 @@ export const getWeatherData = async (latitude, longitude, name, unit) => {
          */
         const hourly = {};
         const hourlyUnits = data.hourly_units; // Units for hourly data, e.g., °F or °C.
-
-        data.hourly.time = data.hourly.time.filter((key) => {
-            const date = new Date(key);
-            if (currentDate >= date) return;
-
-            return key;
-        });
-
-        data.hourly.time = data.hourly.time.slice(0, 25);
+        const oneDayLater = new Date(
+            currentDate.getTime() + 24 * 60 * 60 * 1000
+        ); // 24 hours from now
 
         data.hourly.time.forEach((key, index) => {
-            // Skip past hourly data to only include future data.
+            const date = new Date(key);
 
-            // Store the hourly temperature and weather code with their respective units.
+            if (currentDate >= date || date > oneDayLater) return;
+
             hourly[key] = {
                 temperature:
                     Math.round(data.hourly['temperature_2m'][index]) +
@@ -98,6 +98,8 @@ export const getWeatherData = async (latitude, longitude, name, unit) => {
 
         return {
             name, // Name of the location.
+            latitude: data.latitude,
+            longitude: data.longitude,
             current: {
                 time: data.current.time,
                 temperature:
@@ -109,6 +111,7 @@ export const getWeatherData = async (latitude, longitude, name, unit) => {
                 windDirection:
                     data.current['wind_direction_10m'] +
                     (currentUnits['wind_direction_10m'] || '°'),
+                weatherCode: data.current['weather_code'],
             },
             hourly, // Organized hourly forecast.
             daily, // Organized daily forecast.

@@ -1,3 +1,4 @@
+import { renderWeatherData } from './dom-helpers.js';
 import { getGeoCoding, getWeatherData } from './fetch.js';
 import { getTemperatureUnit, updateTempUnit } from './storage.js';
 
@@ -37,5 +38,5 @@ weatherForm.addEventListener('submit', async (e) => {
 
     e.target.reset();
 
-    // TODO: Render the weather data
+    renderWeatherData(weatherData);
 });
