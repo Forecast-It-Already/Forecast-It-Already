@@ -46,7 +46,7 @@ export const getWeatherData = async (latitude, longitude, name, unit) => {
                 'Sunday',
             ];
 
-            if (currentDate.getDay() === day + 1) {
+            if (currentDate.getDay() === day) {
                 daysOfWeek[day] = 'Today';
             }
 

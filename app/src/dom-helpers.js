@@ -26,7 +26,6 @@ const formatTime = (currentDate, timezone, includeMinutes, numericHours) => {
 
 // Form Container
 export const form = (weatherData) => {
-    console.log(weatherData.timezone);
     document.querySelector('h2#current-weather-title').textContent =
         weatherData.name;
 
@@ -68,12 +67,15 @@ const hourly = (weatherData) => {
         pTemp.className = 'temperature';
         i.className = weatherIcons[weatherCode];
 
-        pTime.textContent = formatTime(
+        const formatted = formatTime(
             new Date(time),
             weatherData.timezone,
             false,
             true
         );
+
+        pTime.textContent = formatted;
+
         pTemp.textContent = data.temperature;
 
         // 3. Append
@@ -84,6 +86,7 @@ const hourly = (weatherData) => {
 
 const daily = (weatherData) => {
     const div = document.querySelector('div.daily');
+    let foundToday = false;
     div.innerHTML = ``;
 
     Object.entries(weatherData.daily).forEach(([date, data]) => {
@@ -95,10 +98,12 @@ const daily = (weatherData) => {
         const i = document.createElement('i');
 
         // 2. Modify
-        if (date === weatherData.current.time.split('T')[0]) {
+        if (!foundToday && date === weatherData.current.time.split('T')[0]) {
             span.className = 'clicked';
             pDay.textContent = 'Today';
+            foundToday = true;
         }
+
         span.className = 'none';
         span.id = date;
         span.dataset.date = date;
