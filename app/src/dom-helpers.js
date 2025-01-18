@@ -2,30 +2,50 @@ import { weatherIcons, slogans } from './constants.js';
 import { getWeatherData } from './fetch.js';
 import { getTemperatureUnit } from './storage.js';
 
+let intervalId;
+
+/**
+ *
+ * @param {string} timezone
+ * @param {boolean} includeMinutes
+ * @param {boolean} oneDigitHour
+ * @returns - Formatted time "01:12 PM" | "12:35 AM"
+ */
+
+const formatTime = (currentDate, timezone, includeMinutes, numericHours) => {
+    const options = {
+        timeZone: timezone,
+        hour: numericHours ? 'numeric' : '2-digit',
+        minute: includeMinutes ? '2-digit' : undefined,
+        hour12: true, // For 12-hour format
+    };
+    const timeFormatter = new Intl.DateTimeFormat('en-US', options);
+
+    return timeFormatter.format(currentDate);
+};
+
 // Form Container
 export const form = (weatherData) => {
+    console.log(weatherData.timezone);
     document.querySelector('h2#current-weather-title').textContent =
-    weatherData.name;
-    
+        weatherData.name;
+
     document.querySelector('i#current-weather-icon').className =
-    weatherIcons[weatherData.current.weatherCode];
-    
+        weatherIcons[weatherData.current.weatherCode];
+
     document.querySelector('h3#current-weather-temperature').textContent =
-    weatherData.current.temperature;
-    
-    setInterval(() => {
-        // Formatting from Military to 12-Hour:
-        const military = weatherData.current.time.split('T')[1];
-        const [hours, minutes] = military.split(":").map(Number);
-        const period = hours >= 12 ? "PM" : "AM";
-        
-        let currentTime = new Date();
-        let hrs = currentTime.getHours() % 12 || 12;
-        let mins = currentTime.getMinutes() < 10 ? `0${currentTime.getMinutes()}`: `${currentTime.getMinutes()}`;
-        let secs = currentTime.getSeconds();
-        
-        document.querySelector('h1#current-weather-time').textContent = `${hrs}:${mins} ${period}`;
-    }, 1000)
+        weatherData.current.temperature;
+
+    const secondsLeft = 60 - new Date().getSeconds;
+
+    setTimeout(() => {
+        intervalId = setInterval(() => {
+            const time = formatTime(new Date(), weatherData.timezone, true);
+
+            document.querySelector('h1#current-weather-time').textContent =
+                time;
+        }, 1000);
+    }, secondsLeft);
 };
 
 const hourly = (weatherData) => {
@@ -34,14 +54,6 @@ const hourly = (weatherData) => {
     div.innerHTML = ``;
 
     Object.entries(weatherData.hourly).forEach(([time, data]) => {
-        const military = time.split('T')[1];
-        // Formatting from Military to 12-Hour:
-        const [hours, minutes] = military.split(":").map(Number);
-        const period = hours >= 12 ? "PM" : "AM";
-        // const adjustedHours = hours % 12 || 12; // One way
-        const adjustedHours = ((hours + 11) % 12 + 1); // Second way
-        const time12Hour = `${adjustedHours} ${period}`;
-
         const weatherCode = data.weatherCode;
 
         // 1. Create
@@ -56,8 +68,12 @@ const hourly = (weatherData) => {
         pTemp.className = 'temperature';
         i.className = weatherIcons[weatherCode];
 
-        // pTime.textContent = military;
-        pTime.textContent = time12Hour;
+        pTime.textContent = formatTime(
+            new Date(time),
+            weatherData.timezone,
+            false,
+            true
+        );
         pTemp.textContent = data.temperature;
 
         // 3. Append
@@ -131,8 +147,12 @@ const conditions = () => {
         pPrecipitation.className = 'details';
         pWindDirection.className = 'details';
 
-        pHigh.textContent = `High: ${span.dataset.high}${getTemperatureUnit() === 'celsius' ? `°C` : `°F`}`;
-        pLow.textContent = `Low: ${span.dataset.low}${getTemperatureUnit() === 'celsius' ? `°C` : `°F`}`;
+        pHigh.textContent = `High: ${span.dataset.high}${
+            getTemperatureUnit() === 'celsius' ? `°C` : `°F`
+        }`;
+        pLow.textContent = `Low: ${span.dataset.low}${
+            getTemperatureUnit() === 'celsius' ? `°C` : `°F`
+        }`;
         pPrecipitation.textContent = `Precipitation: ${span.dataset.precipitation} in`;
         pWindDirection.textContent = `Wind Direction: ${span.dataset.windDirection}°`;
 
@@ -177,6 +197,10 @@ export const renderTheme = (theme) => {
 };
 
 const renderContainers = (weatherData) => {
+    if (intervalId) {
+        clearInterval(intervalId);
+    }
+
     form(weatherData);
     hourly(weatherData);
     daily(weatherData);
@@ -185,6 +209,7 @@ const renderContainers = (weatherData) => {
 
 export const renderWeatherData = async (weatherData) => {
     renderContainers(weatherData);
+
     const { latitude, longitude, name } = weatherData;
 
     document

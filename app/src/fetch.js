@@ -12,7 +12,7 @@ export const getWeatherData = async (latitude, longitude, name, unit) => {
         latitude
     )}&longitude=${encodeURI(
         longitude
-    )}&current=temperature_2m,precipitation,weather_code,wind_direction_10m&hourly=temperature_2m,weather_code&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_sum,wind_direction_10m_dominant&temperature_unit=${unit}&precipitation_unit=inch&timezone=America%2FNew_York`;
+    )}&current=temperature_2m,precipitation,weather_code,wind_direction_10m&hourly=temperature_2m,weather_code&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_sum,wind_direction_10m_dominant&temperature_unit=${unit}&precipitation_unit=inch&timezone=auto`;
 
     try {
         const response = await fetch(url);
@@ -100,6 +100,7 @@ export const getWeatherData = async (latitude, longitude, name, unit) => {
             name, // Name of the location.
             latitude: data.latitude,
             longitude: data.longitude,
+            timezone: data.timezone,
             current: {
                 time: data.current.time,
                 temperature:
@@ -138,9 +139,14 @@ export const getGeoCoding = async (name) => {
 
     try {
         const response = await fetch(url);
-        if (!response.ok) throw new Error('Location Not Found');
+        if (!response.ok) throw new Error('Error fetching Geocoding');
 
         const data = await response.json();
+
+        if (!data.results[0]) {
+            throw new Error(`Unable to get weather data for ${name}`);
+        }
+
         const geoData = data.results[0];
 
         return {
