@@ -21,7 +21,7 @@ export const form = (weatherData) => {
         
         let currentTime = new Date();
         let hrs = currentTime.getHours() % 12 || 12;
-        let mins = currentTime.getMinutes();
+        let mins = currentTime.getMinutes() < 10 ? `0${currentTime.getMinutes()}`: `${currentTime.getMinutes()}`;
         let secs = currentTime.getSeconds();
         
         document.querySelector('h1#current-weather-time').textContent = `${hrs}:${mins} ${period}`;
