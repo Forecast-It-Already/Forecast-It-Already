@@ -4,11 +4,6 @@ import { getTemperatureUnit } from './storage.js';
 
 // Form Container
 export const form = (weatherData) => {
-    // Formatting from Military to 12-Hour:
-    const military = weatherData.current.time.split('T')[1];
-    const [hours, minutes] = military.split(":").map(Number);
-    const period = hours >= 12 ? "PM" : "AM";
-    
     document.querySelector('h2#current-weather-title').textContent =
     weatherData.name;
     
@@ -19,10 +14,16 @@ export const form = (weatherData) => {
     weatherData.current.temperature;
     
     setInterval(() => {
+        // Formatting from Military to 12-Hour:
+        const military = weatherData.current.time.split('T')[1];
+        const [hours, minutes] = military.split(":").map(Number);
+        const period = hours >= 12 ? "PM" : "AM";
+        
         let currentTime = new Date();
         let hrs = currentTime.getHours() % 12 || 12;
         let mins = currentTime.getMinutes();
         let secs = currentTime.getSeconds();
+        
         document.querySelector('h1#current-weather-time').textContent = `${hrs}:${mins} ${period}`;
     }, 1000)
 };
