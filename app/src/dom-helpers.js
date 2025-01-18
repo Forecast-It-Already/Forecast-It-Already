@@ -4,6 +4,14 @@ import { getTemperatureUnit } from './storage.js';
 
 // Form Container
 export const form = (weatherData) => {
+    const military = weatherData.current.time.split('T')[1];
+    // Formatting from Military to 12-Hour:
+    const [hours, minutes] = military.split(":").map(Number);
+    const period = hours >= 12 ? "PM" : "AM";
+    const adjustedHours = hours % 12 || 12; // One way
+    // const adjustedHours = ((hours + 11) % 12 + 1); // Second way
+    const time12Hour = `${adjustedHours}:${minutes} ${period}`;
+
     document.querySelector('h2#current-weather-title').textContent =
         weatherData.name;
 
@@ -13,8 +21,10 @@ export const form = (weatherData) => {
     document.querySelector('h3#current-weather-temperature').textContent =
         weatherData.current.temperature;
 
+    // document.querySelector('h1#current-weather-time').textContent =
+    //     weatherData.current.time.split('T')[1];
     document.querySelector('h1#current-weather-time').textContent =
-        weatherData.current.time.split('T')[1];
+        time12Hour;
 };
 
 const hourly = (weatherData) => {
@@ -24,6 +34,13 @@ const hourly = (weatherData) => {
 
     Object.entries(weatherData.hourly).forEach(([time, data]) => {
         const military = time.split('T')[1];
+        // Formatting from Military to 12-Hour:
+        const [hours, minutes] = military.split(":").map(Number);
+        const period = hours >= 12 ? "PM" : "AM";
+        // const adjustedHours = hours % 12 || 12; // One way
+        const adjustedHours = ((hours + 11) % 12 + 1); // Second way
+        const time12Hour = `${adjustedHours} ${period}`;
+
         const weatherCode = data.weatherCode;
 
         // 1. Create
@@ -38,7 +55,8 @@ const hourly = (weatherData) => {
         pTemp.className = 'temperature';
         i.className = weatherIcons[weatherCode];
 
-        pTime.textContent = military;
+        // pTime.textContent = military;
+        pTime.textContent = time12Hour;
         pTemp.textContent = data.temperature;
 
         // 3. Append
