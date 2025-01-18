@@ -4,27 +4,27 @@ import { getTemperatureUnit } from './storage.js';
 
 // Form Container
 export const form = (weatherData) => {
-    const military = weatherData.current.time.split('T')[1];
     // Formatting from Military to 12-Hour:
+    const military = weatherData.current.time.split('T')[1];
     const [hours, minutes] = military.split(":").map(Number);
     const period = hours >= 12 ? "PM" : "AM";
-    const adjustedHours = hours % 12 || 12; // One way
-    // const adjustedHours = ((hours + 11) % 12 + 1); // Second way
-    const time12Hour = `${adjustedHours}:${minutes} ${period}`;
-
+    
     document.querySelector('h2#current-weather-title').textContent =
-        weatherData.name;
-
+    weatherData.name;
+    
     document.querySelector('i#current-weather-icon').className =
-        weatherIcons[weatherData.current.weatherCode];
-
+    weatherIcons[weatherData.current.weatherCode];
+    
     document.querySelector('h3#current-weather-temperature').textContent =
-        weatherData.current.temperature;
-
-    // document.querySelector('h1#current-weather-time').textContent =
-    //     weatherData.current.time.split('T')[1];
-    document.querySelector('h1#current-weather-time').textContent =
-        time12Hour;
+    weatherData.current.temperature;
+    
+    setInterval(() => {
+        let currentTime = new Date();
+        let hrs = currentTime.getHours() % 12 || 12;
+        let mins = currentTime.getMinutes();
+        let secs = currentTime.getSeconds();
+        document.querySelector('h1#current-weather-time').textContent = `${hrs}:${mins} ${period}`;
+    }, 1000)
 };
 
 const hourly = (weatherData) => {
