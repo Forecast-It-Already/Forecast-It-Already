@@ -130,9 +130,9 @@ const conditions = () => {
         pPrecipitation.className = 'details';
         pWindDirection.className = 'details';
 
-        pHigh.textContent = `High: ${span.dataset.high}°F`;
-        pLow.textContent = `Low: ${span.dataset.low}°F`;
-        pPrecipitation.textContent = `Precipitation: ${span.dataset.precipitation} inches`;
+        pHigh.textContent = `High: ${span.dataset.high}${getTemperatureUnit() === 'celsius' ? `°C` : `°F`}`;
+        pLow.textContent = `Low: ${span.dataset.low}${getTemperatureUnit() === 'celsius' ? `°C` : `°F`}`;
+        pPrecipitation.textContent = `Precipitation: ${span.dataset.precipitation} in`;
         pWindDirection.textContent = `Wind Direction: ${span.dataset.windDirection}°`;
 
         // 3. Append
