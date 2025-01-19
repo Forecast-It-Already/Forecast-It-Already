@@ -155,6 +155,10 @@ const proverb = (span) => {
     // 2. Modify
     const weatherCode = span.dataset.weatherCode;
     const sloganData = slogans[weatherCode];
+    if (state === "New York" && span.dataset.maxTemperature <= 32 || span.dataset.maxTemperature <= 10) {
+        h3.textContent = `Slogan:`;
+        p.textContent = `It's BRICK outside!`;
+    }
     h3.textContent = `${sloganData.name}:`;
     p.textContent = sloganData.phrase;
 
