@@ -1,9 +1,22 @@
-import { weatherIcons, slogans } from './constants.js';
+import { DateTime } from 'luxon';
+import { getWeatherIcons, slogans } from './constants.js';
 import { getWeatherData } from './fetch.js';
 import { getTemperatureUnit } from './storage.js';
 
+let intervalId;
+
+/**
+ *
+ * @param {string} timezone
+ * @param {boolean} includeMinutes
+ * @param {boolean} oneDigitHour
+ * @returns - Formatted time "01:12 PM" | "12:35 AM"
+ */
+
 // Form Container
 export const form = (weatherData) => {
+    const weatherIcons = getWeatherIcons(weatherData.timezone);
+
     document.querySelector('h2#current-weather-title').textContent =
         weatherData.name;
 
@@ -13,8 +26,14 @@ export const form = (weatherData) => {
     document.querySelector('h3#current-weather-temperature').textContent =
         weatherData.current.temperature;
 
-    document.querySelector('h1#current-weather-time').textContent =
-        weatherData.current.time.split('T')[1];
+    const secondsLeft = 60 - new Date().getSeconds;
+
+    setTimeout(() => {
+        intervalId = setInterval(() => {
+            document.querySelector('h1#current-weather-time').textContent =
+                DateTime.now().setZone(weatherData.timezone).toFormat('h:mm a');
+        }, 1000);
+    }, secondsLeft);
 };
 
 const hourly = (weatherData) => {
@@ -23,8 +42,11 @@ const hourly = (weatherData) => {
     div.innerHTML = ``;
 
     Object.entries(weatherData.hourly).forEach(([time, data]) => {
-        const military = time.split('T')[1];
         const weatherCode = data.weatherCode;
+        const weatherIcons = getWeatherIcons(
+            weatherData.timezone,
+            data.isoTime
+        );
 
         // 1. Create
         const span = document.createElement('span');
@@ -38,7 +60,8 @@ const hourly = (weatherData) => {
         pTemp.className = 'temperature';
         i.className = weatherIcons[weatherCode];
 
-        pTime.textContent = military;
+        pTime.textContent = time;
+
         pTemp.textContent = data.temperature;
 
         // 3. Append
@@ -49,10 +72,12 @@ const hourly = (weatherData) => {
 
 const daily = (weatherData) => {
     const div = document.querySelector('div.daily');
+    let foundToday = false;
     div.innerHTML = ``;
 
     Object.entries(weatherData.daily).forEach(([date, data]) => {
         const weatherCode = data.weatherCode;
+        const weatherIcons = getWeatherIcons();
 
         // 1. Create
         const span = document.createElement('span');
@@ -60,10 +85,12 @@ const daily = (weatherData) => {
         const i = document.createElement('i');
 
         // 2. Modify
-        if (date === weatherData.current.time.split('T')[0]) {
+        if (!foundToday && date === weatherData.current.time.split('T')[0]) {
             span.className = 'clicked';
             pDay.textContent = 'Today';
+            foundToday = true;
         }
+
         span.className = 'none';
         span.id = date;
         span.dataset.date = date;
@@ -112,9 +139,13 @@ const conditions = () => {
         pPrecipitation.className = 'details';
         pWindDirection.className = 'details';
 
-        pHigh.textContent = `High: ${span.dataset.high}°F`;
-        pLow.textContent = `Low: ${span.dataset.low}°F`;
-        pPrecipitation.textContent = `Precipitation: ${span.dataset.precipitation} inches`;
+        pHigh.textContent = `High: ${span.dataset.high}${
+            getTemperatureUnit() === 'celsius' ? `°C` : `°F`
+        }`;
+        pLow.textContent = `Low: ${span.dataset.low}${
+            getTemperatureUnit() === 'celsius' ? `°C` : `°F`
+        }`;
+        pPrecipitation.textContent = `Precipitation: ${span.dataset.precipitation} in`;
         pWindDirection.textContent = `Wind Direction: ${span.dataset.windDirection}°`;
 
         // 3. Append
@@ -158,6 +189,10 @@ export const renderTheme = (theme) => {
 };
 
 const renderContainers = (weatherData) => {
+    if (intervalId) {
+        clearInterval(intervalId);
+    }
+
     form(weatherData);
     hourly(weatherData);
     daily(weatherData);
@@ -166,6 +201,7 @@ const renderContainers = (weatherData) => {
 
 export const renderWeatherData = async (weatherData) => {
     renderContainers(weatherData);
+
     const { latitude, longitude, name } = weatherData;
 
     document
