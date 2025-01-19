@@ -17,11 +17,8 @@ html {
 :root {
     /* Dark Mode Colorscheme */
     --text: #e5ebe8;
-    --secondary-text: #141a17;
     --background: #060908;
-    --primary: #adc2ba;
-    --secondary: #465a5d;
-    --accent: #7c8f9c;
+    --accent: #0374d1;
     --border: rgba(255, 255, 255, 0.1);
 
     color-scheme: dark;
@@ -38,11 +35,8 @@ html {
 body.light {
     /* Light Mode Colorscheme */
     --text: #141a17;
-    --secondary-text: #e5ebe8;
     --background: #f6f9f8;
-    --primary: #3d524a;
-    --secondary: #a2b6b9;
-    --accent: #637683;
+    --accent: #0374d1;
     --border: rgba(0, 0, 0, 0.1);
 
     color-scheme: light;
@@ -58,6 +52,17 @@ body {
 header,
 section {
     padding: var(--gutters);
+}
+
+.header-title-logo-container {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+#header-icon {
+    width: 50px;
+    height: 50px;
 }
 
 section {
@@ -154,8 +159,15 @@ header {
     padding: var(--gutters);
     font-size: 1.25rem;
     outline: none;
+    background-color: var(--background);
     border: 2px solid var(--border);
     border-radius: var(--border-radius);
+    transition: border-color 0.25s linear;
+}
+
+#search-location-input:active,
+#search-location-input:focus {
+    border-color: var(--accent);
 }
 
 #current-weather-title {
@@ -169,12 +181,13 @@ header {
 /* Second part of the section */
 .second {
     border: 1px solid var(--border);
+    height: 100%;
 }
 
 .weather-data-container {
     display: flex;
     justify-content: center;
-    max-height: 500px;
+    height: 100%;
 }
 
 /* Start of Hourly Container */
@@ -184,6 +197,9 @@ header {
     grid-auto-columns: 15rem;
     overflow-x: scroll;
     min-width: fit-content;
+    height: 100%;
+    max-height: 500px;
+    padding: 0.5rem;
 }
 
 .hour {
@@ -191,7 +207,7 @@ header {
     justify-content: space-evenly;
     gap: 10px;
     font-size: 20px;
-    padding: 10px;
+    padding: 0.8rem;
     border: 1px solid var(--border);
     border-radius: var(--border-radius);
 }
@@ -208,26 +224,24 @@ header {
 
 .weather-details-container {
     width: 100%;
-    align-self: center;
 }
 
 .conditions-proverb {
-    border: 1px solid var(--border);
-    border-radius: var(--border-radius);
     display: flex;
     justify-content: space-evenly;
+    align-items: center;
     padding: 1rem;
+    height: 70%;
 }
 
 /* Start of Daily Container */
 .daily {
-    border: 1px solid var(--border);
-    border-radius: var(--border-radius);
     display: flex;
     gap: 2rem;
     justify-content: space-evenly;
     padding: 1rem;
-    overflow-x: scroll;
+    height: 30%;
+    flex-wrap: wrap;
 }
 
 .daily span {
@@ -267,7 +281,8 @@ header {
 
 /* Start of Conditions Container */
 .conditions {
-    display: inline-block;
+    display: flex;
+    flex-direction: column;
     font-size: 1.5rem;
     width: 50%;
 }
@@ -280,7 +295,8 @@ header {
 
 /* Start of Proverb Container */
 .proverb {
-    display: inline-block;
+    display: flex;
+    flex-direction: column;
     text-align: center;
     width: 50%;
 }
