@@ -1,5 +1,5 @@
 import { DateTime } from 'luxon';
-import { weatherIcons, slogans } from './constants.js';
+import { getWeatherIcons, slogans } from './constants.js';
 import { getWeatherData } from './fetch.js';
 import { getTemperatureUnit } from './storage.js';
 
@@ -15,6 +15,8 @@ let intervalId;
 
 // Form Container
 export const form = (weatherData) => {
+    const weatherIcons = getWeatherIcons(weatherData.timezone);
+
     document.querySelector('h2#current-weather-title').textContent =
         weatherData.name;
 
@@ -41,6 +43,10 @@ const hourly = (weatherData) => {
 
     Object.entries(weatherData.hourly).forEach(([time, data]) => {
         const weatherCode = data.weatherCode;
+        const weatherIcons = getWeatherIcons(
+            weatherData.timezone,
+            data.isoTime
+        );
 
         // 1. Create
         const span = document.createElement('span');
@@ -71,6 +77,7 @@ const daily = (weatherData) => {
 
     Object.entries(weatherData.daily).forEach(([date, data]) => {
         const weatherCode = data.weatherCode;
+        const weatherIcons = getWeatherIcons();
 
         // 1. Create
         const span = document.createElement('span');

@@ -87,6 +87,7 @@ export const getWeatherData = async (latitude, longitude, name, unit) => {
                     Math.round(data.hourly['temperature_2m'][index]) +
                     (hourlyUnits?.['temperature_2m'] || '°F'),
                 weatherCode: data.hourly['weather_code'][index],
+                isoTime,
             };
         });
 
