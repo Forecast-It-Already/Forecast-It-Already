@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <link rel="icon" type="image/svg+xml" href="/Forecast-It-Already/logo.png" />
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+        />
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/weather-icons/2.0.10/css/weather-icons.min.css"
+        />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Forecast It Already!</title>
+      <script type="module" crossorigin src="/Forecast-It-Already/assets/index-CFBOmNyP.js"></script>
+      <link rel="stylesheet" crossorigin href="/Forecast-It-Already/assets/index-Cm8ZW4Wb.css">
+    </head>
+    <body>
+        <div id="app">
+            <header>
+                <div class="header-title-logo-container">
+                    <img
+                        id="header-icon"
+                        src="/Forecast-It-Already/assets/logo-iS0SZbjZ.png"
+                        alt="Forecast It Logo"
+                    />
+                    <h1 id="header-title">FORECAST IT ALREADY!</h1>
+                </div>
+                <div class="config-container">
+                    <button
+                        id="temperature-switch"
+                        aria-label="Switch temperature unit"
+                    >
+                        <span id="fahrenheit" class="temperature-switch-option">
+                            F
+                        </span>
+                        <span id="celsius" class="temperature-switch-option">
+                            C
+                        </span>
+                    </button>
+
+                    <button id="theme-change-button"></button>
+                </div>
+            </header>
+
+            <section class="first">
+                <div class="weather-icon-time-form-container">
+                    <div class="weather-icon-temperature-time-container">
+                        <i id="current-weather-icon" class=""></i>
+                        <div class="weather-temperature-time-container">
+                            <h3 id="current-weather-temperature"></h3>
+                            <h1 id="current-weather-time"></h1>
+                        </div>
+                    </div>
+
+                    <div class="current-weather-form-container">
+                        <form id="weather-form">
+                            <input
+                                type="text"
+                                name="searchLocation"
+                                id="search-location-input"
+                                placeholder="Search Weather Information"
+                            />
+                        </form>
+
+                        <div class="current-weather-container">
+                            <h2 id="current-weather-title"></h2>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="second">
+                <div class="weather-data-container">
+                    <div class="hourly"></div>
+                    <div class="weather-details-container">
+                        <div class="daily"></div>
+                        <div class="conditions-proverb">
+                            <div class="conditions"></div>
+                            <div class="proverb"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </body>
+</html>
