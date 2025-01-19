@@ -1,11 +1,6 @@
 import './events.js';
 import { renderWeatherData } from './dom-helpers.js';
-import {
-    getLocation,
-    getTemperatureUnit,
-    initializeTempUnit,
-    initializeTheme,
-} from './storage.js';
+import { getLocation, initializeTempUnit, initializeTheme } from './storage.js';
 import { getWeatherData } from './fetch.js';
 
 const main = async () => {
@@ -13,7 +8,7 @@ const main = async () => {
     let weatherData;
 
     const location = getLocation();
-    const temperatureUnit = getTemperatureUnit();
+    const temperatureUnit = initializeTempUnit();
 
     if (!location) {
         weatherData = await getWeatherData(
