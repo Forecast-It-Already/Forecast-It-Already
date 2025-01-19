@@ -1,3 +1,4 @@
+import { DateTime } from 'luxon';
 import { weatherIcons, slogans } from './constants.js';
 import { getWeatherData } from './fetch.js';
 import { getTemperatureUnit } from './storage.js';
@@ -11,18 +12,6 @@ let intervalId;
  * @param {boolean} oneDigitHour
  * @returns - Formatted time "01:12 PM" | "12:35 AM"
  */
-
-const formatTime = (currentDate, timezone, includeMinutes, numericHours) => {
-    const options = {
-        timeZone: timezone,
-        hour: numericHours ? 'numeric' : '2-digit',
-        minute: includeMinutes ? '2-digit' : undefined,
-        hour12: true, // For 12-hour format
-    };
-    const timeFormatter = new Intl.DateTimeFormat('en-US', options);
-
-    return timeFormatter.format(currentDate);
-};
 
 // Form Container
 export const form = (weatherData) => {
@@ -39,10 +28,8 @@ export const form = (weatherData) => {
 
     setTimeout(() => {
         intervalId = setInterval(() => {
-            const time = formatTime(new Date(), weatherData.timezone, true);
-
             document.querySelector('h1#current-weather-time').textContent =
-                time;
+                DateTime.now().setZone(weatherData.timezone).toFormat('h:mm a');
         }, 1000);
     }, secondsLeft);
 };
@@ -67,14 +54,7 @@ const hourly = (weatherData) => {
         pTemp.className = 'temperature';
         i.className = weatherIcons[weatherCode];
 
-        const formatted = formatTime(
-            new Date(time),
-            weatherData.timezone,
-            false,
-            true
-        );
-
-        pTime.textContent = formatted;
+        pTime.textContent = time;
 
         pTemp.textContent = data.temperature;
 
