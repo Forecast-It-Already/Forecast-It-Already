@@ -58,12 +58,14 @@ export const getWeatherIcons = (timezone, isoTime) => {
     if (!timezone) {
         return dayIcons;
     } else if (isoTime) {
-        date = DateTime.fromISO(isoTime).setZone(timezone);
+        date = DateTime.fromISO(isoTime, { zone: timezone });
     } else {
         date = DateTime.now().setZone(timezone);
     }
 
     const hour = date.hour;
+    console.log({ isoTime });
+    console.log(hour);
 
     if (hour >= 6 && hour < 18) {
         return dayIcons;
