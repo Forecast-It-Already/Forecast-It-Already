@@ -70,8 +70,8 @@ export const getWeatherData = async (latitude, longitude, name, unit) => {
          * Organize hourly weather data.
          * Similar to daily data, hourly data is also disorganized. We'll structure it into an object:
          *
-         * key: The date and time (e.g., "2025-01-15T22:00")
-         * value: An object containing temperature and weather code.
+         * key: The current hour: "2 am"
+         * value: An object containing temperature, weather code, and the current time as an ISO String.
          */
         const hourly = {};
         const hourlyUnits = data.hourly_units; // Units for hourly data, e.g., °F or °C.
