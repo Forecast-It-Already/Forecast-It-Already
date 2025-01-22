@@ -37,13 +37,13 @@ export const getWeatherData = async (latitude, longitude, name, unit) => {
          */
         const daily = {};
         const daysOfWeek = [
-            'Sunday',
             'Monday',
             'Tuesday',
             'Wednesday',
             'Thursday',
             'Friday',
             'Saturday',
+            'Sunday',
         ];
 
         data.daily.time.forEach((isoDate, index) => {
