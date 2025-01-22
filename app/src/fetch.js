@@ -51,7 +51,7 @@ export const getWeatherData = async (latitude, longitude, name, unit) => {
 
             const dayLabel = day.hasSame(currentDate, 'day')
                 ? 'Today'
-                : daysOfWeek[day.weekday];
+                : daysOfWeek[day.weekday - 1];
 
             daily[isoDate] = {
                 day: dayLabel,
