@@ -27,11 +27,13 @@ temperatureUnitButton.addEventListener('click', async (e) => {
 
     const { latitude, longitude, name } = getLocation();
 
+    const newTemperature = updateTempUnit();
+
     const weatherData = await getWeatherData(
         latitude,
         longitude,
         name,
-        updateTempUnit()
+        newTemperature
     );
 
     await renderWeatherData(weatherData);

@@ -1,6 +1,6 @@
 import { DateTime } from 'luxon';
 import { getWeatherIcons, slogans } from './constants.js';
-import { getClimateChange, getWeatherData } from './fetch.js';
+import { getClimateChange } from './fetch.js';
 import { getTemperatureUnit } from './storage.js';
 import Chart from 'chart.js/auto';
 
@@ -193,20 +193,9 @@ const renderContainers = (weatherData) => {
 export const renderWeatherData = async (weatherData) => {
     renderContainers(weatherData);
 
-    const { latitude, longitude, name } = weatherData;
+    const { latitude, longitude } = weatherData;
 
-    document
-        .getElementById('temperature-switch')
-        .addEventListener('click', async () => {
-            const newWeatherData = await getWeatherData(
-                latitude,
-                longitude,
-                name,
-                getTemperatureUnit()
-            );
-
-            renderContainers(newWeatherData);
-        });
+    const temperatureUnit = getTemperatureUnit();
 
     const date = `${new Date().getFullYear()}-01-01`;
 
@@ -214,7 +203,7 @@ export const renderWeatherData = async (weatherData) => {
         latitude,
         longitude,
         date,
-        getTemperatureUnit()
+        temperatureUnit
     );
 
     const graphSection = document.getElementById('graph-container');
