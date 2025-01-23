@@ -208,7 +208,8 @@ export const renderWeatherData = async (weatherData) => {
             renderContainers(newWeatherData);
         });
 
-    const date = weatherData.current.time.split('T')[0];
+    const date = `${new Date().getFullYear()}-01-01`;
+
     const { labels, values } = await getClimateChange(
         latitude,
         longitude,
