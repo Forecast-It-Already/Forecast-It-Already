@@ -161,3 +161,44 @@ export const getGeoCoding = async (name) => {
         return null;
     }
 };
+
+export const getClimateChange = async (latitude, longitude, date, unit) => {
+    const url = `https://climate-api.open-meteo.com/v1/climate?latitude=${latitude}&longitude=${longitude}&start_date=2014-01-03&end_date=${date}&models=CMCC_CM2_VHR4&daily=temperature_2m_max&aggregate=yearly&temperature_unit=${unit}`;
+
+    try {
+        const response = await fetch(url);
+
+        if (!response.ok) {
+            throw new Error('Error fetching climate change data');
+        }
+
+        const data = await response.json();
+
+        const dailyTime = data.daily.time;
+        const dailyTemperature = data.daily['temperature_2m_max'];
+
+        const yearlyData = {};
+
+        for (let i = 0; i < dailyTime.length; i++) {
+            const currentTemperature = dailyTemperature[i];
+
+            const year = new Date(dailyTime[i]).getFullYear();
+
+            if (!yearlyData[year]) {
+                yearlyData[year] = currentTemperature;
+            } else {
+                if (yearlyData[year] < currentTemperature) {
+                    yearlyData[year] = currentTemperature;
+                }
+            }
+        }
+
+        return {
+            labels: Object.keys(yearlyData),
+            values: Object.values(yearlyData),
+        };
+    } catch (err) {
+        console.error(err);
+        return null;
+    }
+};

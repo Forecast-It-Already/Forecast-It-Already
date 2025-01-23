@@ -22,7 +22,7 @@ const main = async () => {
             location.latitude,
             location.longitude,
             location.name,
-            initializeTempUnit()
+            temperatureUnit
         );
     }
 
