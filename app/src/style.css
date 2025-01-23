@@ -154,7 +154,7 @@ header {
 }
 
 #current-weather-icon {
-    font-size: var(--font-5xl);
+    font-size: 5rem;
 }
 
 #current-weather-time {
