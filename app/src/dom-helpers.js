@@ -1,9 +1,8 @@
 import { DateTime } from 'luxon';
 import { getWeatherIcons, slogans } from './constants.js';
-import { getWeatherData } from './fetch.js';
+import { getClimateChange, getWeatherData } from './fetch.js';
 import { getTemperatureUnit } from './storage.js';
-
-let intervalId;
+import Chart from 'chart.js/auto';
 
 /**
  *
@@ -26,14 +25,8 @@ export const form = (weatherData) => {
     document.querySelector('h3#current-weather-temperature').textContent =
         weatherData.current.temperature;
 
-    const secondsLeft = 60 - new Date().getSeconds;
-
-    setTimeout(() => {
-        intervalId = setInterval(() => {
-            document.querySelector('h1#current-weather-time').textContent =
-                DateTime.now().setZone(weatherData.timezone).toFormat('h:mm a');
-        }, 1000);
-    }, secondsLeft);
+    document.querySelector('h1#current-weather-time').textContent =
+        DateTime.now().setZone(weatherData.timezone).toFormat('h:mm a');
 };
 
 const hourly = (weatherData) => {
@@ -139,11 +132,13 @@ const conditions = () => {
         pPrecipitation.className = 'details';
         pWindDirection.className = 'details';
 
+        const temperatureUnit = getTemperatureUnit();
+
         pHigh.textContent = `High: ${span.dataset.high}${
-            getTemperatureUnit() === 'celsius' ? `°C` : `°F`
+            temperatureUnit === 'celsius' ? `°C` : `°F`
         }`;
         pLow.textContent = `Low: ${span.dataset.low}${
-            getTemperatureUnit() === 'celsius' ? `°C` : `°F`
+            temperatureUnit === 'celsius' ? `°C` : `°F`
         }`;
         pPrecipitation.textContent = `Precipitation: ${span.dataset.precipitation} in`;
         pWindDirection.textContent = `Wind Direction: ${span.dataset.windDirection}°`;
@@ -189,10 +184,6 @@ export const renderTheme = (theme) => {
 };
 
 const renderContainers = (weatherData) => {
-    if (intervalId) {
-        clearInterval(intervalId);
-    }
-
     form(weatherData);
     hourly(weatherData);
     daily(weatherData);
@@ -216,4 +207,51 @@ export const renderWeatherData = async (weatherData) => {
 
             renderContainers(newWeatherData);
         });
+
+    const date = weatherData.current.time.split('T')[0];
+    const { labels, values } = await getClimateChange(
+        latitude,
+        longitude,
+        date,
+        getTemperatureUnit()
+    );
+
+    const graphSection = document.getElementById('graph-container');
+    graphSection.innerHTML = ``;
+
+    const canvas = document.createElement('canvas');
+    canvas.style = 'width: 100%; height: 400px;';
+
+    const style = window.getComputedStyle(document.body);
+
+    new Chart(canvas, {
+        type: 'bar',
+        data: {
+            labels,
+            datasets: [
+                {
+                    label: 'Max Temperature',
+                    data: values,
+                    backgroundColor: style.getPropertyValue('--accent'),
+                    borderColor: style.getPropertyValue('--border'),
+                    borderWidth: 1,
+                    borderRadius: parseInt(
+                        style.getPropertyValue('--border-radius'),
+                        10
+                    ),
+                },
+            ],
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'top',
+                },
+            },
+        },
+    });
+
+    graphSection.appendChild(canvas);
 };

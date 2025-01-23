@@ -1,6 +1,7 @@
 import { renderTheme, renderWeatherData } from './dom-helpers.js';
 import { getGeoCoding, getWeatherData } from './fetch.js';
 import {
+    getLocation,
     getTemperatureUnit,
     updateLocation,
     updateTempUnit,
@@ -11,7 +12,7 @@ const temperatureUnitButton = document.getElementById('temperature-switch');
 
 const themeChangeButton = document.getElementById('theme-change-button');
 
-temperatureUnitButton.addEventListener('click', (e) => {
+temperatureUnitButton.addEventListener('click', async (e) => {
     if (e.target.tagName !== 'SPAN') {
         return;
     }
@@ -24,7 +25,16 @@ temperatureUnitButton.addEventListener('click', (e) => {
         option.classList.toggle('active-temperature');
     });
 
-    updateTempUnit();
+    const { latitude, longitude, name } = getLocation();
+
+    const weatherData = await getWeatherData(
+        latitude,
+        longitude,
+        name,
+        updateTempUnit()
+    );
+
+    await renderWeatherData(weatherData);
 });
 
 themeChangeButton.addEventListener('click', () => {
@@ -40,12 +50,13 @@ weatherForm.addEventListener('submit', async (e) => {
     const location = e.target.searchLocation.value;
 
     const { name, latitude, longitude } = await getGeoCoding(location);
+    const temperatureUnit = getTemperatureUnit();
 
     const weatherData = await getWeatherData(
         latitude,
         longitude,
         name,
-        getTemperatureUnit()
+        temperatureUnit
     );
 
     e.target.reset();

@@ -43,7 +43,10 @@
                 </div>
             </header>
 
-            <section class="first" aria-label="First Second">
+            <section
+                class="current-weather-section"
+                aria-label="Current Weather Section"
+            >
                 <div class="weather-icon-time-form-container">
                     <div class="weather-icon-temperature-time-container">
                         <i id="current-weather-icon" class=""></i>
@@ -73,7 +76,10 @@
                 </div>
             </section>
 
-            <section class="second" aria-label="Second Section">
+            <section
+                class="weather-data-section"
+                aria-label="Weather Data Section"
+            >
                 <div class="weather-data-container">
                     <div class="hourly"></div>
                     <div class="weather-details-container">
@@ -84,6 +90,15 @@
                         </div>
                     </div>
                 </div>
+            </section>
+
+            <section
+                class="climate-change-section"
+                aria-label="Climate Change Section"
+            >
+                <h2 class="section-title">Climate Change</h2>
+
+                <div id="graph-container"></div>
             </section>
         </div>
         <script type="module" src="/src/main.js"></script>
