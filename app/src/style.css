@@ -258,7 +258,7 @@ header {
     justify-content: space-between;
     padding: 1rem;
     height: 30%;
-    overflow-x: scroll;
+    overflow-y: auto;
 }
 
 .daily span {
