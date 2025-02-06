@@ -51,6 +51,10 @@ weatherForm.addEventListener('submit', async (e) => {
 
     const location = e.target.searchLocation.value;
 
+    if (!location) {
+        return;
+    }
+
     const { name, latitude, longitude } = await getGeoCoding(location);
     const temperatureUnit = getTemperatureUnit();
 
