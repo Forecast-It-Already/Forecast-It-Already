@@ -18,7 +18,7 @@ This application will use the [Open Meteo API](https://open-meteo.com/). Below a
   - This will fetch the latitude and longitude based on the name of the location.
   - `latitude` and `longitude`.
  
-## Screenshot of Fetch Calls
+## 📸 Screenshot of Fetch Calls
 ![image](https://github.com/user-attachments/assets/a0093cd2-1ecc-415f-a999-1526448ca13f)
 
 ![image](https://github.com/user-attachments/assets/0f5de39b-e10a-4d33-8ee6-03c2a6e6ebe7)
